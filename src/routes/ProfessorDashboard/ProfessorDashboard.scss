@@ -1,0 +1,29 @@
+@import "base";
+
+.cardWrapper {
+  margin-top: 15%;
+}
+.card {
+  text-align: center;
+  color: #fff;
+  border-radius: 6px;
+  background: rgba(13, 133, 200, 0.2);
+  padding: 25px;
+}
+.button {
+  &:disabled {
+    cursor: not-allowed;
+    background: rgba(151, 151, 151, 0.15);
+  }
+  &:hover {
+    background: rgba(151, 151, 151, 0.35);
+  }
+  color: #fff;
+  border: 1px solid #979797;
+  width: 80%;
+  padding: 10px 10px;
+  font-size: 12px;
+  font-weight: 400;
+  background: rgba(151, 151, 151, 0.25);
+  margin: 25px auto 0 auto;
+}

@@ -1,35 +1,28 @@
-@import 'base';
-
+@import "base";
 .container {
-  @extend .flex-column-center;
-  justify-content: flex-start;
-  padding-top: 2rem;
+  background: transparent;
+  padding-top: 1.5rem;
   width: 100%;
-  min-height: 530px;
-  background-color: inherit;
+}
+.alignCenter {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.title {
+  color: #fff;
+}
+.secondary {
+  color: #fff;
 }
 
 .progress {
   margin-top: 5rem;
 }
 
-.panel {
-  @extend .flex-column-center;
-  justify-content: center;
-  padding: 1rem;
-  width: 30%;
-  min-width: 250px;
-  @include tablet {
-    width: 55%;
-  }
-  @include mobile {
-    width: 75%;
-  }
-}
-
 .or {
   margin-top: 1rem;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
   font-size: 1.3rem;
 }
 

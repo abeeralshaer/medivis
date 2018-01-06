@@ -1,9 +1,9 @@
 .flex {
-  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
-  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
-  display: -ms-flexbox;      /* TWEENER - IE 10 */
-  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex; /* NEW, Spec - Opera 12.1, Firefox 20+ */
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
 }
 .flex-column {
   @extend .flex;
@@ -22,4 +22,31 @@
     flex-direction: row;
     justify-content: center;
   }
+}
+
+.app-body {
+  background: transparent;
+  height: 100%;
+}
+
+.btn-primary {
+  background: #1dc3eb;
+  font-size: 30px;
+  font-weight: 400;
+  font-family: "Montserrat";
+  color: #ffffff;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open > .dropdown-toggle.btn-primary {
+  background: darken(#1dc3eb, 8%);
+}
+
+.btn-primary:active,
+.btn-primary.active {
+  background: darken(#1dc3eb, 8%);
+  box-shadow: none;
 }

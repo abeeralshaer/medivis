@@ -1,11 +1,32 @@
-@import 'base';
+@import "base";
 
 .container {
   height: 100%;
   overflow-y: hidden;
+  background-image: url("../../static/background.png");
+  background-position: center center;
+  background-size: cover;
 }
 .children {
   height: calc(100% - 48px);
   overflow-y: scroll;
-  background-color: $background;
+  padding-bottom: 61px;
+}
+.social {
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  justify-content: center;
+  a {
+    font-size: 22px;
+    margin: 0 15px;
+    color: #84d5ff;
+    &:hover {
+      color: #05c0ed;
+    }
+  }
 }

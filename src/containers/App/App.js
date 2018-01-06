@@ -26,7 +26,7 @@ export default class AppContainer extends Component {
     const { routes, store } = this.props
     return (
       <Provider store={store}>
-        <div>
+        <div className="app-body">
           <Router history={browserHistory}>{routes}</Router>
           <Notifications />
         </div>

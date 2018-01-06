@@ -1,0 +1,51 @@
+@import "base";
+
+.container {
+  @extend .flex-row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.logo {
+  background: url("../../static/logo.png");
+  width: 90px;
+  height: 70px;
+  background-size: cover;
+}
+
+.link {
+  color: #fff;
+  font-size: 36px;
+  background: url("../../static/arrow-left.png");
+  background-size: cover;
+  width: 48px;
+  height: 48px;
+}
+.onLogout {
+  cursor: pointer;
+}
+.logout {
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  font-size: 30px;
+  &:hover {
+    color: #d3d3d3;
+  }
+  span {
+    margin-left: 25px;
+  }
+}
+
+.logoText {
+  margin: 0;
+  color: #fff;
+  font-weight: normal;
+}
+
+.inline {
+  @extend .flex-row;
+  align-items: flex-end;
+}
