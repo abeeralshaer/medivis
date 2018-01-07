@@ -7,15 +7,12 @@
     "clean": "rimraf dist",
     "compile": "node build/scripts/compile",
     "build": "firebase servecross-env NODE_ENV=production npm run compile",
-    "build:prod":
-      "echo \"build:prod is deprecated. Use npm run build.\" && npm run build",
-    "start":
-      "cross-env NODE_ENV=development webpack-dashboard -p 1234 -m -t material -- node build/scripts/start",
+    "build:prod": "echo \"build:prod is deprecated. Use npm run build.\" && npm run build",
+    "start": "cross-env NODE_ENV=development webpack-dashboard -p 1234 -m -t material -- node build/scripts/start",
     "start:simple": "cross-env NODE_ENV=development node build/scripts/start",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "format":
-      "prettier --single-quote --no-semi --trailing-comma none --write \"src/**/*.js\""
+    "format": "prettier --single-quote --no-semi --trailing-comma none --write \"src/**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -32,6 +29,7 @@
     "promise": "^7.1.1",
     "prop-types": "^15.5.10",
     "react": "^15.6.2",
+    "react-bootstrap": "^0.32.0",
     "react-collapsible": "^2.0.3",
     "react-dom": "^15.5.4",
     "react-google-button": "^0.3.0",
