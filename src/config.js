@@ -11,12 +11,12 @@ export const env = 'development'
 
 // Config from Firebase Console
 export const firebase =  {
-  apiKey: "AIzaSyA3YdgorfWJn7IZDshb2SbxeCaX2WBeF24",
-  authDomain: "inz-test-anatomyx.firebaseapp.com",
-  databaseURL: "https://inz-test-anatomyx.firebaseio.com",
-  projectId: "inz-test-anatomyx",
-  storageBucket: "inz-test-anatomyx.appspot.com",
-  messagingSenderId: "272752703056"
+  apiKey: "AIzaSyASZfz114xM-EsUcSwp3ePN30krxuACu_s",
+  authDomain: "inz-anatomyx-design.firebaseapp.com",
+  databaseURL: "https://inz-anatomyx-design.firebaseio.com",
+  projectId: "inz-anatomyx-design",
+  storageBucket: "inz-anatomyx-design.appspot.com",
+  messagingSenderId: "295844935760"
 };
 
 // Config for react-redux-firebase

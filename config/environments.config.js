@@ -11,10 +11,10 @@ module.exports = {
   development: config => ({
     compiler_public_path: `http://${config.server_host}:${config.server_port}/`,
     firebase: {
-      apiKey: 'AIzaSyA3YdgorfWJn7IZDshb2SbxeCaX2WBeF24',
-      authDomain: 'inz-test-anatomyx.firebaseapp.com',
-      databaseURL: 'https://inz-test-anatomyx.firebaseio.com',
-      storageBucket: 'inz-test-anatomyx.appspot.com'
+      apiKey: "AIzaSyASZfz114xM-EsUcSwp3ePN30krxuACu_s",
+      authDomain: "inz-anatomyx-design.firebaseapp.com",
+      databaseURL: "https://inz-anatomyx-design.firebaseio.com",
+      storageBucket: "inz-anatomyx-design.appspot.com",
     },
     reduxFirebase: {
       userProfile: 'instructors', // root that user profiles are written to

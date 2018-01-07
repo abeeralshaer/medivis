@@ -27,3 +27,30 @@
   background: rgba(151, 151, 151, 0.25);
   margin: 25px auto 0 auto;
 }
+.thead {
+  background: rgba(13, 133, 200, 0.2);
+  color: #fff;
+  th {
+    font-weight: 400;
+    font-size: 14px;
+    text-align: center;
+    border: 0;
+  }
+}
+.tableOverlay {
+  background: rgba(13, 133, 200, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  td {
+    text-align: center;
+    color: #fff;
+    font-family: "Open Sans";
+    font-weight: 300;
+    font-size: 14px;
+  }
+  & > thead > tr > th {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  & > tbody > tr > td {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}

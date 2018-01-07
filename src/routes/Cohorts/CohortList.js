@@ -8,14 +8,16 @@ import { withFirebase } from "react-redux-firebase";
 import { spinnerWhileLoading } from "utils/components";
 import { UserIsAuthenticated } from "utils/router";
 import classes from "./CohortList.scss";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Grid, Row, Col, Table, ProgressBar } from "react-bootstrap";
+import { firebaseConnect, populate } from 'react-redux-firebase'
+import { map, get } from 'lodash'
 
 export class CohortList extends React.Component {
   state = {
     isOpened: false
   };
   render() {
-    const { avatarUrl, profile } = this.props;
+    const { cohorts } = this.props;
     return (
       <Grid className={classes.container}>
         <Row>
@@ -26,18 +28,29 @@ export class CohortList extends React.Component {
             mdOffset={4}
             className={classes.cardWrapper}
           >
-            <div className={classes.card}>
-              <h2 className={classes.usernameTitle}>
-                Welcome, {profile.username[0].toUpperCase()}
-                {profile.username.slice(1)}
-              </h2>
-              <button disabled className={classes.button}>
-                My Learning Data
-              </button>
-              <Link to="/cohorts">
-                <div className={classes.button}>Instructor Dashboard2</div>
-              </Link>
-            </div>
+           <Table
+              responsive
+              condensed
+              bordered
+              className={classes.tableOverlay}
+            >
+              <thead className={classes.thead}>
+                <tr>
+                  <th>Name</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+              { map(cohorts, (cohort, key) => (
+                    <tr key={key}>
+                      <td>{cohort.name}</td>
+                      <td>{cohort.description}</td>
+                    </tr>
+                  )
+                )
+              }
+              </tbody>
+            </Table>
           </Col>
         </Row>
       </Grid>
@@ -46,16 +59,19 @@ export class CohortList extends React.Component {
 }
 
 CohortList.propTypes = {
-  avatarUrl: PropTypes.string,
-  profile: PropTypes.object
+  cohorts: PropTypes.object,
 };
 
 export default compose(
   UserIsAuthenticated, // redirect to /login if user is not authenticated
   withFirebase, // adds props.firebase
-  connect(({ firebase: { profile } }) => ({
-    profile,
-    avatarUrl: profile.avatarUrl
-  })),
-  spinnerWhileLoading(["profile"])
+  firebaseConnect((props) => ([
+    { path: '/cohorts', queryParams: [ 'orderByChild=instructorId', `equalTo=${props.authData.uid}` ] }
+  ])),
+  connect(
+    (state) => ({
+      cohorts: state.firebase.data.cohorts,
+    })
+  ),
+  spinnerWhileLoading(["cohorts"])
 )(CohortList);
