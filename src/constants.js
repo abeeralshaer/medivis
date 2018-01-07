@@ -3,6 +3,7 @@ export const DETAIL_PATH = ":projectname";
 export const ACCOUNT_PATH = "/account";
 export const PROFESSOR_DASHBOARD = "/pfdashboard";
 export const COHORT_LIST = "/cohorts";
+export const COHORT_DETAILS = ":cohortname";
 export const LOGIN_PATH = "/login";
 export const SIGNUP_PATH = "/signup";
 
@@ -25,6 +26,7 @@ export const formNames = {
 
 export const paths = {
   cohorts: COHORT_LIST,
+  cohort: COHORT_DETAILS,
   list: LIST_PATH,
   account: ACCOUNT_PATH,
   pfdashboard: PROFESSOR_DASHBOARD,

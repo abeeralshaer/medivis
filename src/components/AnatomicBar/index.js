@@ -3,7 +3,7 @@ import classes from "./AnatomicBar.scss";
 import { Link } from "react-router";
 import { LIST_PATH, ACCOUNT_PATH, LOGIN_PATH, SIGNUP_PATH } from "constants";
 
-export default ({ isAuth, logout }) => (
+export default ({ isAuth, logout, router }) => (
   <div className={classes.container}>
     {!isAuth && (
       <Link to="/">
@@ -13,10 +13,10 @@ export default ({ isAuth, logout }) => (
       </Link>
     )}
     {isAuth && (
-      <div onClick={() => logout()} className={classes.onLogout}>
+      <div className={classes.onLogout}>
         <div className={classes.logout}>
-          <div className={classes.link} />
-          <span>Log out</span>
+          <div onClick={() => router.goBack()} className={classes.link} />
+          <span onClick={() => logout()}>Log out</span>
         </div>
       </div>
     )}

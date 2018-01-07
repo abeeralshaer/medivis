@@ -1,10 +1,10 @@
-import { UserAuthWrapper } from 'redux-auth-wrapper'
-import { browserHistory } from 'react-router'
-import { LIST_PATH, ACCOUNT_PATH } from 'constants'
-import LoadingSpinner from 'components/LoadingSpinner'
+import { UserAuthWrapper } from "redux-auth-wrapper";
+import { browserHistory } from "react-router";
+import { LIST_PATH, ACCOUNT_PATH, PROFESSOR_DASHBOARD } from "constants";
+import LoadingSpinner from "components/LoadingSpinner";
 
-const AUTHED_REDIRECT = 'AUTHED_REDIRECT'
-const UNAUTHED_REDIRECT = 'UNAUTHED_REDIRECT'
+const AUTHED_REDIRECT = "AUTHED_REDIRECT";
+const UNAUTHED_REDIRECT = "UNAUTHED_REDIRECT";
 
 /**
  * @description Higher Order Component that redirects to `/login` instead
@@ -14,20 +14,20 @@ const UNAUTHED_REDIRECT = 'UNAUTHED_REDIRECT'
  */
 export const UserIsAuthenticated = UserAuthWrapper({
   // eslint-disable-line new-cap
-  wrapperDisplayName: 'UserIsAuthenticated',
+  wrapperDisplayName: "UserIsAuthenticated",
   LoadingComponent: LoadingSpinner,
   authSelector: ({ firebase: { auth } }) => auth,
   authenticatingSelector: ({ firebase: { auth, isInitializing } }) =>
     !auth.isLoaded || isInitializing,
   predicate: auth => !auth.isEmpty,
   redirectAction: newLoc => dispatch => {
-    browserHistory.replace(newLoc)
+    browserHistory.replace(newLoc);
     dispatch({
       type: UNAUTHED_REDIRECT,
-      payload: { message: 'User is not authenticated.' }
-    })
+      payload: { message: "User is not authenticated." }
+    });
   }
-})
+});
 
 /**
  * @description Higher Order Component that redirects to listings page or most
@@ -39,23 +39,23 @@ export const UserIsAuthenticated = UserAuthWrapper({
  */
 export const UserIsNotAuthenticated = UserAuthWrapper({
   // eslint-disable-line new-cap
-  wrapperDisplayName: 'UserIsNotAuthenticated',
+  wrapperDisplayName: "UserIsNotAuthenticated",
   allowRedirectBack: false,
   LoadingComponent: LoadingSpinner,
   failureRedirectPath: (state, props) =>
     // redirect to page user was on or to list path
-    props.location.query.redirect || ACCOUNT_PATH,
+    props.location.query.redirect || PROFESSOR_DASHBOARD,
   authSelector: ({ firebase: { auth } }) => auth,
   authenticatingSelector: ({ firebase: { auth, isInitializing } }) =>
     !auth.isLoaded || isInitializing,
   predicate: auth => auth.isEmpty,
   redirectAction: newLoc => dispatch => {
-    browserHistory.replace(newLoc)
-    dispatch({ type: AUTHED_REDIRECT })
+    browserHistory.replace(newLoc);
+    dispatch({ type: AUTHED_REDIRECT });
   }
-})
+});
 
 export default {
   UserIsAuthenticated,
   UserIsNotAuthenticated
-}
+};

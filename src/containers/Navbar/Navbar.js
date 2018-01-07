@@ -10,7 +10,15 @@ import DownArrow from "material-ui/svg-icons/hardware/keyboard-arrow-down";
 import Avatar from "material-ui/Avatar";
 import { connect } from "react-redux";
 import { firebaseConnect, isLoaded, isEmpty } from "react-redux-firebase";
-import { LIST_PATH, ACCOUNT_PATH, LOGIN_PATH, SIGNUP_PATH } from "constants";
+import {
+  LIST_PATH,
+  ACCOUNT_PATH,
+  LOGIN_PATH,
+  SIGNUP_PATH,
+  COHORT_LIST,
+  PROFESSOR_DASHBOARD,
+  COHORT_DETAILS
+} from "constants";
 import defaultUserImage from "static/User.png";
 import classes from "./Navbar.scss";
 import AnatomicBar from "../../components/AnatomicBar/index";
@@ -63,7 +71,13 @@ export default class Navbar extends Component {
   }
 
   isAnatomicPath = path =>
-    [ACCOUNT_PATH, LOGIN_PATH, SIGNUP_PATH].includes(path);
+    [
+      ACCOUNT_PATH,
+      LOGIN_PATH,
+      SIGNUP_PATH,
+      COHORT_LIST,
+      PROFESSOR_DASHBOARD
+    ].map(str => str.includes(path));
 
   render() {
     const { profile, auth, location } = this.props;
@@ -117,11 +131,11 @@ export default class Navbar extends Component {
           </Link>
         </div>
       );
-
     return this.isAnatomicPath(
       location.pathname ? location.pathname : pathname
     ) ? (
       <AnatomicBar
+        router={this.context.router}
         logout={this.handleLogout}
         isAuth={dataLoaded && authExists}
       />

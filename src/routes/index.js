@@ -4,11 +4,11 @@ import Home from "./Home";
 import LoginRoute from "./Login";
 import SignupRoute from "./Signup";
 import ProjectsRoute from "./Projects";
-import AccountRoute from "./Account";
+import AccountPage from "./Account";
 import RecoverRoute from "./Recover";
 import NotFoundRoute from "./NotFound";
 import ProfessorDashboard from "./ProfessorDashboard";
-import CohortList from "./Cohorts";
+import CohortListRoute from "./Cohorts";
 
 /*  Note: Instead of using JSX, we recommend using react-router
     PlainRoute objects to build route definitions.   */
@@ -16,13 +16,12 @@ import CohortList from "./Cohorts";
 export const createRoutes = store => ({
   path: "/",
   component: CoreLayout,
-  indexRoute: Home,
+  indexRoute: ProfessorDashboard,
   childRoutes: [
-    AccountRoute,
-    ProfessorDashboard,
-    CohortList,
     LoginRoute,
     SignupRoute,
+    AccountPage,
+    CohortListRoute(store),
     ProjectsRoute(store), // async route definitions recieve store
     RecoverRoute(store), // async route definitions recieve store
     /* Place all Routes above here so NotFoundRoute can act as a 404 page */
