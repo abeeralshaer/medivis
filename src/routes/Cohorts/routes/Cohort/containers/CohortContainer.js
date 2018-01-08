@@ -126,7 +126,7 @@ class Cohort extends Component {
           </Col>
           <Col xs={12} sm={12} md={8}>
             <div className={classes.cardWrapper}>
-              <div className={classes.header}>My can't understand</div>
+              <div className={classes.header}>My Announcements</div>
               <div className={classes.scrollable}>
                 <div className={classes.card} style={{ padding: "10px 0" }}>
                   <Collapsible

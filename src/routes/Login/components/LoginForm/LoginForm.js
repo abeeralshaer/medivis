@@ -18,8 +18,7 @@ import {
 import classes from "./LoginForm.scss";
 import { FormInput } from "../../../../components/FormInput";
 const btnCustom = {
-  width: "45%",
-  marginRight: 15
+  marginLeft: 10
 };
 export const LoginForm = ({ pristine, submitting, handleSubmit }) => (
   <form className={classes.container} onSubmit={handleSubmit}>

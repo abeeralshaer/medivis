@@ -1,12 +1,12 @@
 {
   "name": "medivis",
   "version": "0.0.1",
-  "description": "Medivis Firebase Application",
+  "description": "Medivis Application",
   "main": "index.js",
   "scripts": {
     "clean": "rimraf dist",
     "compile": "node build/scripts/compile",
-    "build": "firebase servecross-env NODE_ENV=production npm run compile",
+    "build": "cross-env NODE_ENV=production npm run compile",
     "build:prod": "echo \"build:prod is deprecated. Use npm run build.\" && npm run build",
     "start": "cross-env NODE_ENV=development webpack-dashboard -p 1234 -m -t material -- node build/scripts/start",
     "start:simple": "cross-env NODE_ENV=development node build/scripts/start",
@@ -19,7 +19,6 @@
     "url": "git+https://github.com/testuser/material.git"
   },
   "author": "testuser (https://github.com/testuser)",
-  "license": "MIT",
   "dependencies": {
     "firebase": "^4.5.2",
     "lodash": "^4.17.4",

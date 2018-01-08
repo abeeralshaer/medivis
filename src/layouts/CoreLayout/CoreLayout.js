@@ -9,13 +9,13 @@ export const CoreLayout = ({ children }) => (
     <Navbar />
     <div className={classes.children}>{children}</div>
     <div className={classes.social}>
-      <a href="twitter.com">
+      <a target="_blank" href="http://www.twitter.com">
         <i className="fa fa-twitter" />
       </a>
-      <a href="youtube.com">
+      <a target="_blank" href="http://www.youtube.com">
         <i className="fa fa-youtube-play" />
       </a>
-      <a href="instagram.com">
+      <a target="_blank" href="http://www.instagram.com">
         <i className="fa fa-instagram" />
       </a>
     </div>
