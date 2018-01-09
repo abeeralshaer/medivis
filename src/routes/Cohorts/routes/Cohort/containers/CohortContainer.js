@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { firebaseConnect, isEmpty } from "react-redux-firebase";
+import { firebaseConnect, isEmpty, populate, withFirebase } from "react-redux-firebase";
 import Collapsible from "react-collapsible";
 import _ from "lodash";
 import { Grid, Row, Col, Table, ProgressBar } from "react-bootstrap";
@@ -73,6 +73,7 @@ class Cohort extends Component {
     return row;
   };
   render() {
+    console.log(this.props)
     const { cohort, avatarUrl, updateAccount, profile } = this.props;
     if (isEmpty(cohort)) {
       return <div>Cohort not found</div>;
@@ -242,16 +243,30 @@ Cohort.propTypes = {
   cohort: PropTypes.object,
   params: PropTypes.object.isRequired
 };
+const populates = [
+  { child: 'studentId', root: 'students'}
+]
 
 const enhance = compose(
+  withFirebase,
   firebaseConnect(({ params: { cohortname } }) => [
-    { path: `cohorts/${cohortname}` }
+    { path: `cohorts/${cohortname}` },
+    { path: `studentCohorts`,
+      queryParams: [
+        "orderByChild=cohortId",
+        `equalTo=${cohortname}`
+      ],
+      populates
+    }
   ]),
-  connect(({ firebase: { data, profile } }, { params: { cohortname } }) => ({
-    profile,
-    avatarUrl: profile.avatarUrl,
-    cohort: data.cohorts && data.cohorts[cohortname]
-  })),
+  connect(
+    ({ firebase, firebase: { data, profile } }, { params: { cohortname } }) => ({
+      profile,
+      avatarUrl: profile.avatarUrl,
+      cohort: data.cohorts && data.cohorts[cohortname],
+      studentCohorts: populate(firebase, 'studentCohorts', populates),
+    })
+  ),
   spinnerWhileLoading(["cohort"])
 );
 
