@@ -28,38 +28,30 @@ export class CohortList extends React.Component {
         <Row>
           <Col
             xs={12}
-            sm={12}
+            sm={4}
             md={4}
+            smOffset={4}
             mdOffset={4}
             className={classes.cardWrapper}
           >
-            <Table
-              responsive
-              condensed
-              bordered
-              className={classes.tableOverlay}
-            >
-              <thead className={classes.thead}>
-                <tr>
-                  <th>Name</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {map(cohorts, (cohort, key) => (
-                  <tr
-                    className={classes.cohortRow}
-                    key={key}
-                    onClick={() =>
-                      this.context.router.push(`${COHORT_LIST}/${key}`)
-                    }
-                  >
-                    <td>{cohort.name}</td>
-                    <td>{cohort.description}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            {cohorts &&
+              cohorts.length && (
+                <div>
+                  <h1 className="text-center">
+                    <i className="fa fa-close" />
+                    Select Cohort
+                  </h1>
+                  <div>
+                    {map(cohorts, (cohort, key) => (
+                      <Link className={classes.button}>{cohort.name}</Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+            <div className={classes.addCohort}>
+              <i className="fa fa-plus" />
+              Add Cohort
+            </div>
           </Col>
         </Row>
       </Grid>

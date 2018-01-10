@@ -5,40 +5,77 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { withHandlers } from "recompose";
 import { withFirebase } from "react-redux-firebase";
+import { Grid, Row, Col } from "react-bootstrap";
 import { spinnerWhileLoading } from "utils/components";
 import { UserIsAuthenticated } from "utils/router";
 import classes from "./ProfessorDashboard.scss";
-import { Grid, Row, Col } from "react-bootstrap";
-import Collapsible from "react-collapsible";
 
 export class ProfessorDashboard extends React.Component {
   state = {
-    isOpened: false
+    isLearning: false,
+    isInstructor: false
   };
   render() {
     const { avatarUrl, profile } = this.props;
+    const { isInstructor, isLearning } = this.state;
     return (
-      <Grid className={classes.container}>
-        <Row>
-          <Col
-            xs={12}
-            sm={12}
-            md={4}
-            mdOffset={4}
-            className={classes.cardWrapper}
-          >
-            <div className={classes.card}>
-              <h2 className={classes.usernameTitle}>
-                Welcome, {profile.username[0].toUpperCase()}
-                {profile.username.slice(1)}
-              </h2>
-              <button disabled className={classes.button}>
-                My Learning Data
-              </button>
-              <Link to="/cohorts">
-                <div className={classes.button}>Instructor Dashboard</div>
-              </Link>
-            </div>
+      <Grid fluid className={classes.container}>
+        <Row className={classes.fullHeight}>
+          <Col xs={12} sm={6} md={6} className={classes.instuctorDashboard}>
+            {!isInstructor && (
+              <div
+                className={classes.alignCenter}
+                onClick={() => this.setState({ isInstructor: true })}
+              >
+                <h2 className={classes.instuctorDashboardTitle}>
+                  Instructor Dashboard
+                </h2>
+                <i className="fa fa-plus" />
+              </div>
+            )}
+            {isInstructor && (
+              <div className={classes.alignCenter}>
+                <h2 className={classes.instuctorDashboardTitle}>
+                  Instructor Dashboard
+                </h2>
+                <p className={classes.enterAction}>
+                  <i
+                    className="fa fa-times"
+                    onClick={() => this.setState({ isInstructor: false })}
+                  />
+                  <Link to="/cohorts">Enter</Link>
+                </p>
+              </div>
+            )}
+          </Col>
+          <Col xs={12} sm={6} md={6} className={classes.learningData}>
+            <Link className={classes.alignCenter}>
+              {!isLearning && (
+                <div
+                  className={classes.alignCenter}
+                  onClick={() => this.setState({ isLearning: true })}
+                >
+                  <h2 className={classes.instuctorDashboardTitle}>
+                    Learning Data
+                  </h2>
+                  <i className="fa fa-plus" />
+                </div>
+              )}
+              {isLearning && (
+                <div className={classes.alignCenter}>
+                  <h2 className={classes.instuctorDashboardTitle}>
+                    Learning Data
+                  </h2>
+                  <p className={classes.enterAction}>
+                    <i
+                      className="fa fa-times"
+                      onClick={() => this.setState({ isLearning: false })}
+                    />
+                    <Link to="/cohorts">Enter</Link>
+                  </p>
+                </div>
+              )}
+            </Link>
           </Col>
         </Row>
       </Grid>

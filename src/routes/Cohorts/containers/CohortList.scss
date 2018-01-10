@@ -3,6 +3,13 @@
 .cardWrapper {
   margin-top: 15%;
 }
+h1 {
+  position: relative;
+  i {
+    position: absolute;
+    left: 0;
+  }
+}
 .card {
   text-align: center;
   color: #fff;
@@ -10,19 +17,34 @@
   background: rgba(13, 133, 200, 0.2);
   padding: 25px;
 }
+.addCohort {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  margin-top: 35px;
+  cursor: pointer;
+  i {
+    margin-right: 25px;
+  }
+}
 .button {
   &:disabled {
     cursor: not-allowed;
     background: rgba(151, 151, 151, 0.15);
   }
   &:hover {
+    cursor: pointer;
+    color: #fff;
     background: rgba(151, 151, 151, 0.35);
   }
+  text-align: center;
+  display: block;
   color: #fff;
   border: 1px solid #979797;
   width: 80%;
   padding: 10px 10px;
-  font-size: 12px;
+  font-size: 32px;
   font-weight: 400;
   background: rgba(151, 151, 151, 0.25);
   margin: 25px auto 0 auto;
