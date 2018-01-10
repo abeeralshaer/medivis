@@ -10,12 +10,41 @@ h1 {
     left: 0;
   }
 }
+.closeNew {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 15px;
+  font-size: 28px;
+}
 .card {
+  form {
+    text-align: left;
+  }
+  position: relative;
   text-align: center;
   color: #fff;
   border-radius: 6px;
   background: rgba(13, 133, 200, 0.2);
-  padding: 25px;
+  padding: 60px 45px;
+}
+.formField {
+  color: rgba(255, 255, 255, 0.3);
+  background-color: transparent;
+  border: 0;
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(235, 235, 235, 0.3);
+  border-radius: 0;
+  &:focus {
+    border-color: rgba(5, 192, 237, 0.5);
+  }
+}
+.actionContainer {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 .addCohort {
   display: flex;
