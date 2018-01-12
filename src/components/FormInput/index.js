@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { TextField } from "redux-form-material-ui";
+
 import {
   FormControl,
   FormGroup,
@@ -16,17 +18,12 @@ export const FormInput = ({
   className,
   meta: { touched, error, warning }
 }) => (
-  <FormGroup
-    validationState={touched && error ? "error" : warning ? "warning" : null}
-    controlId={input.name}
-  >
-    {label && <ControlLabel>{label}</ControlLabel>}
-    <FormControl
-      className={className}
-      type={type}
-      placeholder={placeholder}
-      {...input}
-    />
-    {touched && error && <HelpBlock>{error}</HelpBlock>}
-  </FormGroup>
+  <TextField
+    {...input}
+    type={type}
+    className={className}
+    hintText={label}
+    floatingLabelText={label}
+    errorText={touched && error}
+  />
 );

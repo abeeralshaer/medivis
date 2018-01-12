@@ -1,14 +1,13 @@
 import React, { cloneElement } from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
 import { Link } from "react-router";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withHandlers } from "recompose";
 import { withFirebase } from "react-redux-firebase";
-import { required, validateEmail } from "utils/form";
 import { spinnerWhileLoading } from "utils/components";
 import { UserIsAuthenticated } from "utils/router";
+import { values } from "utils/objectToArray";
 import classes from "./CohortList.scss";
 import {
   Grid,
@@ -17,13 +16,12 @@ import {
   Table,
   ProgressBar,
   Modal,
-  Button,
-  FormGroup
+  Button
 } from "react-bootstrap";
 import { firebaseConnect, populate } from "react-redux-firebase";
 import { map, get } from "lodash";
 import { COHORT_LIST } from "constants";
-import { FormInput } from "../../../components/FormInput";
+import AddCohortForm from "../components/AddCohortForm";
 
 export class CohortList extends React.Component {
   static contextTypes = {
@@ -35,7 +33,26 @@ export class CohortList extends React.Component {
   };
 
   handleSubmit(form) {
-    console.log(form);
+    const { description, name } = form;
+    const { firebase, authData: { uid }, institution } = this.props;
+    let institutionId = null;
+
+    for (let key in institution) {
+      if (key) {
+        for (let nextKey in institution[key]) {
+          institutionId = institution[key]["institutionId"];
+        }
+      }
+    }
+    const body = {
+      institutionId,
+      instructorId: uid,
+      description,
+      name
+    };
+    firebase
+      .push("institution-cohorts", body)
+      .then(() => this.setState({ isNew: false }));
   }
 
   render() {
@@ -43,9 +60,8 @@ export class CohortList extends React.Component {
       return cloneElement(this.props.children, this.props);
     }
 
-    const { cohorts } = this.props;
+    const { cohorts, pristine, submitting } = this.props;
     const { isNew } = this.state;
-
     return (
       <Grid className={classes.container}>
         <Row>
@@ -59,20 +75,24 @@ export class CohortList extends React.Component {
           >
             {!isNew && (
               <div>
-                {cohorts &&
-                  cohorts.length && (
+                {cohorts && (
+                  <div>
+                    <h1 className="text-center">
+                      <i className="fa fa-close" />
+                      Select Cohort
+                    </h1>
                     <div>
-                      <h1 className="text-center">
-                        <i className="fa fa-close" />
-                        Select Cohort
-                      </h1>
-                      <div>
-                        {map(cohorts, (cohort, key) => (
-                          <Link className={classes.button}>{cohort.name}</Link>
-                        ))}
-                      </div>
+                      {map(cohorts, (cohort, key) => (
+                        <Link
+                          to={`${COHORT_LIST}/${key}`}
+                          className={classes.button}
+                        >
+                          {cohort.name}
+                        </Link>
+                      ))}
                     </div>
-                  )}
+                  </div>
+                )}
                 <div
                   className={classes.addCohort}
                   onClick={() => this.setState({ isNew: true })}
@@ -83,52 +103,10 @@ export class CohortList extends React.Component {
               </div>
             )}
             {isNew && (
-              <div className={classes.cardWrapper}>
-                <div className={classes.card}>
-                  <span
-                    onClick={() => this.setState({ isNew: false })}
-                    className={classes.closeNew}
-                  >
-                    <i className="fa fa-close" />
-                  </span>
-                  <form
-                    className={classes.container}
-                    onSubmit={this.handleSubmit}
-                  >
-                    <FormGroup>
-                      <Field
-                        className={classes.formField}
-                        name="institution"
-                        type="text"
-                        placeholder="Institution name"
-                        component={FormInput}
-                        validate={value => (value ? undefined : "Required")}
-                      />
-                      <Field
-                        className={classes.formField}
-                        name="instructor"
-                        type="text"
-                        placeholder="Instructor's email"
-                        component={FormInput}
-                        validate={value => (value ? undefined : "Required")}
-                      />
-                      <Field
-                        className={classes.formField}
-                        name="section"
-                        type="text"
-                        placeholder="Class section"
-                        component={FormInput}
-                        validate={value => (value ? undefined : "Required")}
-                      />
-                    </FormGroup>
-                    <div className={classes.actionContainer}>
-                      <Button bsStyle="primary" type="submit" disabled>
-                        Add Cohort
-                      </Button>
-                    </div>
-                  </form>
-                </div>
-              </div>
+              <AddCohortForm
+                onSubmit={data => this.handleSubmit(data)}
+                onCloseForm={() => this.setState({ isNew: false })}
+              />
             )}
           </Col>
         </Row>
@@ -146,7 +124,14 @@ export default compose(
   withFirebase, // adds props.firebase
   firebaseConnect(props => [
     {
-      path: "/cohorts",
+      path: "/institution-cohorts",
+      queryParams: [
+        "orderByChild=instructorId",
+        `equalTo=${props.authData.uid}`
+      ]
+    },
+    {
+      path: "/institution-instructors",
       queryParams: [
         "orderByChild=instructorId",
         `equalTo=${props.authData.uid}`
@@ -154,10 +139,8 @@ export default compose(
     }
   ]),
   connect(state => ({
-    cohorts: state.firebase.data.cohorts
+    cohorts: state.firebase.data["institution-cohorts"],
+    institution: state.firebase.data["institution-instructors"]
   })),
-  spinnerWhileLoading(["cohorts"]),
-  reduxForm({
-    form: "COHORT_LIST"
-  })
+  spinnerWhileLoading(["cohorts"])
 )(CohortList);

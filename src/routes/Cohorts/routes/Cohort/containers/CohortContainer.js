@@ -2,237 +2,370 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { firebaseConnect, isEmpty, populate, withFirebase } from "react-redux-firebase";
+import {
+  firebaseConnect,
+  isEmpty,
+  populate,
+  withFirebase
+} from "react-redux-firebase";
 import Collapsible from "react-collapsible";
-import _ from "lodash";
+import { map, get } from "lodash";
+import { Bar } from "react-chartjs-2";
 import { Grid, Row, Col, Table, ProgressBar } from "react-bootstrap";
 import { spinnerWhileLoading } from "utils/components";
 import { values } from "utils/objectToArray";
 import { setGrades } from "utils/grades";
 import classes from "./CohortContainer.scss";
 
+const quizPopulate = [
+  {
+    child: "quizId",
+    root: "instructor-quizzes",
+    keyProp: "id"
+  }
+];
+
+const studentAnswerPopulate = [
+  {
+    child: "questionId",
+    root: "quiz-questions"
+  },
+  {
+    child: "answerId",
+    root: "quiz-answers",
+    childParam: "expectedAnswer"
+  }
+];
+
 class Cohort extends Component {
   state = {
-    isOpened: false
+    isOpened: false,
+    isSelected: true,
+    selectedStudent: null,
+    isQuestionsOpened: null,
+    labels: [],
+    options: {
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              fontColor: "white",
+              fontSize: 12
+            }
+          }
+        ],
+        xAxes: [
+          {
+            ticks: {
+              fontColor: "white",
+              fontSize: 12
+            }
+          }
+        ]
+      },
+      legend: {
+        display: true,
+        labels: {
+          fillStyle: "#fff",
+          fontColor: "rgb(255, 99, 132)"
+        }
+      },
+      maintainAspectRatio: false
+    }
   };
 
-  transformToCorrectData = (cohort = {}) => {
-    cohort.students = Array.from(values(cohort.students));
-    cohort.students.map(student => {
-      student.quizzes = Array.from(values(student.quizzes));
-      student.quizzes.map(
-        quiz =>
-          quiz ? (quiz.questions = Array.from(values(quiz.questions))) : quiz
+  componentWillUnmount() {
+    const { firebase } = this.props;
+    firebase.unWatchEvent("value", "student-answers");
+    firebase.unWatchEvent("value", "student-quizzes");
+  }
+
+  onStudentSelect = selectedStudent => {
+    const { firebase } = this.props;
+    if (selectedStudent) {
+      this.setState({
+        selectedStudent,
+        isQuestionsOpened: false
+      });
+      firebase.watchEvent("value", "student-quizzes", "student-quizzes", {
+        isQuery: true,
+        queryId: `student-quizzes#orderByChild=studentId&equalTo=${selectedStudent}`,
+        queryParams: ["orderByChild=studentId", `equalTo=${selectedStudent}`],
+        populates: quizPopulate
+      });
+    } else {
+      this.setState({
+        selectedStudent,
+        isQuestionsOpened: false
+      });
+      firebase.unWatchEvent("value", "student-answers");
+      firebase.unWatchEvent("value", "student-quizzes");
+    }
+  };
+
+  onQuestionsLoad = (quizId, studentId) => {
+    const { isQuestionsOpened } = this.state;
+    const { firebase } = this.props;
+    if (isQuestionsOpened === quizId) {
+      firebase.unWatchEvent("value", "student-answers");
+      this.setState({
+        isQuestionsOpened: null
+      });
+    } else {
+      this.setState({
+        isQuestionsOpened: quizId
+      });
+      this.props.firebase.watchEvent(
+        "value",
+        "student-answers",
+        "student-answers",
+        {
+          isQuery: true,
+          queryId: `student-answers#orderByChild=quizId-studentId&equalTo=${quizId}-${studentId}`,
+          queryParams: [
+            "orderByChild=quizId-studentId",
+            `equalTo=${quizId}-${studentId}`
+          ],
+          populates: studentAnswerPopulate
+        }
       );
-      return student;
-    });
-    return cohort;
+    }
   };
 
-  renderTableRow = student => {
-    let quizzes = student.quizzes;
-    const questionsAmount = student.quizzes
-      .map(quiz => quiz.questions.length)
-      .reduce((a, b) => a + b, 0);
-
-    const correctQuestionsAmount = student.quizzes
-      .map(quiz => quiz.questions.filter(question => question.isCorrect).length)
-      .reduce((a, b) => a + b, 0);
-
-    quizzes = student.quizzes.concat(Array(3).fill(null)); // if no quizzes show N/A
-
-    const quizCell = quizzes.slice(0, 3).map(
-      quiz =>
-        !!quiz ? (
-          <td>
-            {quiz.questions.filter(question => question.isCorrect).length} /{" "}
-            {quiz.questions.length}
-          </td>
+  renderQuestionsRow = (item, index) => (
+    <tr key={index}>
+      <td>{item.questionId.text}</td>
+      <td>{item.answerId}</td>
+      <td>{item.submittedAnswer}</td>
+      <td>
+        {item.answerId === item.submittedAnswer ? (
+          <i style={{ color: "#27ae60" }} className="fa fa-check" />
         ) : (
-          <td>N/A</td>
-        )
-    );
-    const percentage =
-      questionsAmount > 0 ? correctQuestionsAmount / questionsAmount * 100 : 0;
+          <i style={{ color: "#c0392b" }} className="fa fa-close" />
+        )}
+      </td>
+    </tr>
+  );
+
+  renderTableRow = quiz => {
+    const { isQuestionsOpened } = this.state;
+
     const row = (
-      <tr>
-        <td>{student.name}</td>
-        {quizCell}
-        <td className={classes.inlineTD}>
-          <ProgressBar
-            bsClass={classes.progressbar}
-            className={classes.progress}
-            now={percentage}
-          />
-          <div className={classes.circularProgress}>{percentage}%</div>
+      <tr key={quiz.quizId.id}>
+        <td>{quiz.quizId.name}</td>
+        <td style={{ color: quiz.completed ? "#27ae60" : "#c0392b" }}>
+          {quiz.completed ? "Completed" : "Incomplete"}
         </td>
-        <td>2018-01-08</td>
-        <td>{setGrades(percentage)}</td>
+        <td>{quiz.score}</td>
+        <td
+          className={classes.onQuestionsLoad}
+          onClick={() => this.onQuestionsLoad(quiz.quizId.id, quiz.studentId)}
+        >
+          Details{" "}
+          {isQuestionsOpened ? (
+            <i className="fa fa-caret-down" />
+          ) : (
+            <i className="fa fa-caret-right" />
+          )}
+        </td>
       </tr>
     );
     return row;
   };
-  render() {
-    console.log(this.props)
-    const { cohort, avatarUrl, updateAccount, profile } = this.props;
-    if (isEmpty(cohort)) {
-      return <div>Cohort not found</div>;
-    }
 
-    const students = this.transformToCorrectData(cohort).students;
+  render() {
+    const {
+      cohort = {},
+      studentQuizzes,
+      studentCohorts,
+      studentAnswers,
+      firebase
+    } = this.props;
+
+    const {
+      isSelected,
+      selectedStudent,
+      isQuestionsOpened,
+      options
+    } = this.state;
+
+    const chartData = {
+      labels: Array.from(values(studentQuizzes)).map(quiz => quiz.quizId.name),
+      datasets: [
+        {
+          label: "Class progress",
+          backgroundColor: "rgba(255,99,132,0.2)",
+          borderColor: "rgba(255,99,132,1)",
+          borderWidth: 1,
+          hoverBackgroundColor: "rgba(255,99,132,0.4)",
+          hoverBorderColor: "rgba(255,99,132,1)",
+          data: Array.from(values(studentQuizzes)).map(quiz => quiz.score)
+        }
+      ]
+    };
+
     return (
       <Grid className={classes.container}>
         <Row>
-          <Col xs={12} sm={12} md={4}>
+          <Col xs={12} sm={12} md={3}>
             <div className={classes.cardWrapper}>
-              <div className={classes.header}>Class Info</div>
+              <div className={classes.header}>Students</div>
               <div className={classes.card}>
                 <Row>
-                  <Col xs={6} sm={5} md={5}>
+                  {map(studentCohorts, (item, key) => (
                     <div
-                      className={classes.avatar}
-                      style={{
-                        background: `url(${
-                          avatarUrl
-                            ? avatarUrl
-                            : "https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/68dd54ca-60cf-4ef7-898b-26d7cbe48ec7/10-dithering-opt.jpg"
-                        })`
-                      }}
-                    />
-                  </Col>
-                  <Col xs={6} sm={7} md={7}>
-                    <p className={classes.professorName}>
-                      Professor {profile.username[0].toUpperCase()}
-                      {profile.username.slice(1)}
-                    </p>
-                    <div className={classes.inline}>
-                      <p>Curriculum</p>
-                      <p>{cohort.name}</p>
+                      key={key}
+                      className={classes.studentName}
+                      onClick={() =>
+                        this.onStudentSelect(
+                          selectedStudent === item.studentId.id
+                            ? null
+                            : item.studentId.id
+                        )
+                      }
+                    >
+                      {selectedStudent === item.studentId.id && (
+                        <i className="fa fa-circle" />
+                      )}
+                      <span>{item.studentId.name}</span>
                     </div>
-                    <div className={classes.inline}>
-                      <p>{profile.email}</p>
-                      <p>{profile.username}</p>
-                    </div>
-                    <div className={classes.inline}>
-                      <p>Students</p>
-                      <p>{students.length}</p>
-                    </div>
-                    <button className={classes.buttonDashboard}>
-                      Invite Students
-                    </button>
-                  </Col>
+                  ))}
                 </Row>
               </div>
             </div>
           </Col>
-          <Col xs={12} sm={12} md={8}>
-            <div className={classes.cardWrapper}>
-              <div className={classes.header}>My Announcements</div>
-              <div className={classes.scrollable}>
-                <div className={classes.card} style={{ padding: "10px 0" }}>
-                  <Collapsible
-                    classParentString={classes.Collapsible}
-                    triggerOpenedClassName={classes.CollapsibleOpen}
-                    transitionTime={50}
-                    onOpen={() => this.setState({ isOpened: true })}
-                    onClose={() => this.setState({ isOpened: false })}
-                    trigger={
-                      <p className={classes.inline}>
-                        <span>
-                          {this.state.isOpened ? (
-                            <i className="fa fa-caret-down" />
-                          ) : (
-                            <i className="fa fa-caret-right " />
-                          )}{" "}
-                        </span>
-                        <span className={classes.inlineBetween}>
-                          <span className={classes.anounceTitle}>
-                            Announcement #1 (Most recent){" "}
+          {!selectedStudent && (
+            <Col xs={12} sm={12} md={9}>
+              <div className={classes.cardWrapper}>
+                <div className={classes.header}>My Announcements</div>
+                <div className={classes.scrollable}>
+                  <div className={classes.card} style={{ padding: "10px 0" }}>
+                    <Collapsible
+                      classParentString={classes.Collapsible}
+                      triggerOpenedClassName={classes.CollapsibleOpen}
+                      transitionTime={50}
+                      onOpen={() => this.setState({ isOpened: true })}
+                      onClose={() => this.setState({ isOpened: false })}
+                      trigger={
+                        <p className={classes.inline}>
+                          <span>
+                            {this.state.isOpened ? (
+                              <i className="fa fa-caret-down" />
+                            ) : (
+                              <i className="fa fa-caret-right " />
+                            )}{" "}
                           </span>
-                          <span>12/25/2017</span>
-                          <span>6:37PM</span>
-                        </span>
-                      </p>
-                    }
-                  >
-                    <p>
-                      This is the collapsible content. It can be any element or
-                      React component you like.
-                    </p>
-                    <p>
-                      It can even be another Collapsible component. Check out
-                      the next section!
-                    </p>
-                  </Collapsible>
-                  <Collapsible
-                    classParentString={classes.Collapsible}
-                    triggerOpenedClassName={classes.CollapsibleOpen}
-                    transitionTime={50}
-                    onOpen={() => this.setState({ isOpened: true })}
-                    onClose={() => this.setState({ isOpened: false })}
-                    trigger={
-                      <p className={classes.inline}>
-                        <span>
-                          {this.state.isOpened ? (
-                            <i className="fa fa-caret-down" />
-                          ) : (
-                            <i className="fa fa-caret-right " />
-                          )}{" "}
-                        </span>
-                        <span className={classes.inlineBetween}>
-                          <span className={classes.anounceTitle}>
-                            Announcement #1 (Most recent){" "}
+                          <span className={classes.inlineBetween}>
+                            <span className={classes.anounceTitle}>
+                              Announcement #1 (Most recent){" "}
+                            </span>
+                            <span>12/25/2017</span>
+                            <span>6:37PM</span>
                           </span>
-                          <span>12/25/2017</span>
-                          <span>6:37PM</span>
-                        </span>
+                        </p>
+                      }
+                    >
+                      <p>
+                        This is the collapsible content. It can be any element
+                        or React component you like.
                       </p>
-                    }
-                  >
-                    <p>
-                      This is the collapsible content. It can be any element or
-                      React component you like.
-                    </p>
-                    <p>
-                      It can even be another Collapsible component. Check out
-                      the next section!
-                    </p>
-                  </Collapsible>
+                      <p>
+                        It can even be another Collapsible component. Check out
+                        the next section!
+                      </p>
+                    </Collapsible>
+                    <Collapsible
+                      classParentString={classes.Collapsible}
+                      triggerOpenedClassName={classes.CollapsibleOpen}
+                      transitionTime={50}
+                      onOpen={() => this.setState({ isOpened: true })}
+                      onClose={() => this.setState({ isOpened: false })}
+                      trigger={
+                        <p className={classes.inline}>
+                          <span>
+                            {this.state.isOpened ? (
+                              <i className="fa fa-caret-down" />
+                            ) : (
+                              <i className="fa fa-caret-right " />
+                            )}{" "}
+                          </span>
+                          <span className={classes.inlineBetween}>
+                            <span className={classes.anounceTitle}>
+                              Announcement #1 (Most recent){" "}
+                            </span>
+                            <span>12/25/2017</span>
+                            <span>6:37PM</span>
+                          </span>
+                        </p>
+                      }
+                    >
+                      <p>
+                        This is the collapsible content. It can be any element
+                        or React component you like.
+                      </p>
+                      <p>
+                        It can even be another Collapsible component. Check out
+                        the next section!
+                      </p>
+                    </Collapsible>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={12}>
-            <Table
-              responsive
-              condensed
-              bordered
-              className={classes.tableOverlay}
-            >
-              <thead className={classes.thead}>
-                <tr>
-                  <th>Name</th>
-                  <th>Quiz #1</th>
-                  <th>Quiz #2</th>
-                  <th>Quiz #3</th>
-                  <th width="25%">Progress</th>
-                  <th>Last seen</th>
-                  <th>Total Score</th>
-                </tr>
-              </thead>
-              <tbody>
-                {students.length ? (
-                  students.map(st => this.renderTableRow(st))
-                ) : (
+
+              <div className={classes.cardWrapper}>
+                <div className={classes.header}>Class Progress</div>
+                <div className={classes.chartContainer}>
+                  <Bar
+                    data={chartData}
+                    width={100}
+                    height={250}
+                    options={options}
+                  />
+                </div>
+              </div>
+            </Col>
+          )}
+          {selectedStudent && (
+            <Col xs={12} sm={12} md={8}>
+              <Table
+                responsive
+                condensed
+                bordered
+                className={classes.tableOverlay}
+              >
+                <thead className={classes.thead}>
                   <tr>
-                    <td colSpan={7}>No students participated</td>
+                    <th>Quiz</th>
+                    <th>State</th>
+                    <th>Score</th>
+                    <th>Questions</th>
                   </tr>
-                )}
-              </tbody>
-            </Table>
-          </Col>
+                </thead>
+                <tbody>
+                  {map(studentQuizzes, (student, key) =>
+                    this.renderTableRow(student)
+                  )}
+                  {!studentQuizzes && (
+                    <tr>
+                      <td colSpan={4}>No data for current student</td>
+                    </tr>
+                  )}
+                  {isQuestionsOpened && (
+                    <tr className={classes.innerThead}>
+                      <th>Question</th>
+                      <th>Answer</th>
+                      <th>Submitted</th>
+                      <th>Got it right?</th>
+                    </tr>
+                  )}
+                  {isQuestionsOpened &&
+                    map(studentAnswers, (answer, key) =>
+                      this.renderQuestionsRow(answer, key)
+                    )}
+                </tbody>
+              </Table>
+            </Col>
+          )}
         </Row>
       </Grid>
     );
@@ -244,30 +377,35 @@ Cohort.propTypes = {
   params: PropTypes.object.isRequired
 };
 const populates = [
-  { child: 'studentId', root: 'students'}
-]
+  { child: "studentId", root: "users", keyProp: "id" },
+  { child: "cohortId", root: "institution-cohorts" }
+];
 
 const enhance = compose(
   withFirebase,
   firebaseConnect(({ params: { cohortname } }) => [
-    { path: `cohorts/${cohortname}` },
-    { path: `studentCohorts`,
-      queryParams: [
-        "orderByChild=cohortId",
-        `equalTo=${cohortname}`
-      ],
+    {
+      path: `student-cohorts`,
+      queryParams: ["orderByChild=cohortId", `equalTo=${cohortname}`],
       populates
     }
   ]),
   connect(
-    ({ firebase, firebase: { data, profile } }, { params: { cohortname } }) => ({
-      profile,
-      avatarUrl: profile.avatarUrl,
-      cohort: data.cohorts && data.cohorts[cohortname],
-      studentCohorts: populate(firebase, 'studentCohorts', populates),
-    })
+    ({ firebase, firebase: { data, profile } }, { params: { cohortname } }) => {
+      return {
+        profile,
+        avatarUrl: profile.avatarUrl,
+        studentCohorts: populate(firebase, "student-cohorts", populates),
+        studentQuizzes: populate(firebase, "student-quizzes", quizPopulate),
+        studentAnswers: populate(
+          firebase,
+          "student-answers",
+          studentAnswerPopulate
+        )
+      };
+    }
   ),
-  spinnerWhileLoading(["cohort"])
+  spinnerWhileLoading(["studentCohorts"])
 );
 
 export default enhance(Cohort);
