@@ -82,6 +82,8 @@ export default class Navbar extends Component {
   render() {
     const { profile, auth, location } = this.props;
     const { router: { location: { pathname } } } = this.context;
+    const path = location.pathname ? location.pathname : pathname;
+    console.log(path, path.includes(COHORT_LIST));
     const dataLoaded = isLoaded(auth, profile);
     const authExists = isLoaded(auth) && !isEmpty(auth);
 
@@ -135,6 +137,9 @@ export default class Navbar extends Component {
       location.pathname ? location.pathname : pathname
     ) ? (
       <AnatomicBar
+        profile={profile}
+        isProfessorRoute={path === '/'}
+        isCohortRoute={path.includes(COHORT_LIST)}
         router={this.context.router}
         logout={this.handleLogout}
         isAuth={dataLoaded && authExists}

@@ -60,7 +60,7 @@ p {
 .cardWrapper {
   border: 0.5px solid #ffffff;
   margin-bottom: 30px;
-  min-height: 300px;
+  min-height: 250px;
   background: rgba(13, 133, 200, 0.2);
 }
 .header {
@@ -74,9 +74,10 @@ p {
 .card {
   color: #e7e7e7;
   padding: 15px;
+  height: 100%;
 }
 .scrollable {
-  max-height: 300px;
+  max-height: 250px;
   overflow: hidden;
   overflow-y: scroll;
 }
@@ -139,4 +140,43 @@ p {
   height: 30px;
   border-radius: 100%;
   border: 1px solid #23f0ff;
+}
+
+.studentName {
+  font-size: 32px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 5px;
+  transition: all 0.12s;
+  span {
+    margin-left: 25px;
+  }
+  &:hover {
+    background: rgba(151, 151, 151, 0.1);
+  }
+  i {
+    color: #23f0ff;
+    font-size: 16px;
+  }
+}
+
+.chartContainer {
+  padding: 15px;
+}
+.innerThead {
+  th {
+    font-weight: bold;
+    border: 0 !important;
+    text-align: center;
+    background: rgba(151, 151, 151, 0.1);
+  }
+}
+.onQuestionsLoad {
+  padding: 5px 25px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

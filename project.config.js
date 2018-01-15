@@ -46,7 +46,7 @@ module.exports = {
         storageBucket: 'inz-test-anatomyx.appspot.com'
       },
       reduxFirebase: {
-        userProfile: 'instructors', // root that user profiles are written to
+        userProfile: 'users', // root that user profiles are written to
         enableLogging: false, // enable/disable Firebase Database Logging
         updateProfileOnLogin: false // enable/disable updating of profile on login
       }
@@ -59,7 +59,7 @@ module.exports = {
         storageBucket: 'test-anatomyx.appspot.com'
       },
       reduxFirebase: {
-        userProfile: 'instructors',
+        userProfile: 'users',
         enableLogging: false,
         updateProfileOnLogin: false
       }

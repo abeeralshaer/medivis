@@ -1,7 +1,97 @@
 @import "base";
-
+.container {
+  height: 100%;
+}
+.fullHeight {
+  height: 100%;
+}
 .cardWrapper {
   margin-top: 15%;
+}
+.noPadding {
+  padding: 0;
+}
+.learningData {
+  background: rgba(29, 195, 235, 0.75);
+  height: 100%;
+  padding: 0 !important;
+  a {
+    color: #fff !important;
+  }
+  &:hover {
+    background: rgba(29, 195, 235, 0.65);
+    cursor: pointer;
+  }
+  i {
+    &::before {
+      margin-top: 4px;
+    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    border: 4px solid #fff;
+    border-radius: 100%;
+    margin-top: 25px;
+    font-size: 42px;
+  }
+}
+.enterAction {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 45px;
+  i {
+    margin-top: 0 !important;
+    &::before {
+      margin-top: 0 !important;
+    }
+  }
+  a {
+    margin-left: 25px;
+    font-size: 42px;
+  }
+}
+.learningDataTitle {
+  font-size: 42px;
+}
+.instuctorDashboard {
+  background: rgba(13, 133, 200, 0.35);
+  height: 100%;
+  padding: 0 !important;
+  transition: all 0.12s;
+  a {
+    color: #fff !important;
+  }
+  &:hover {
+    background: rgba(13, 133, 200, 0.25);
+    cursor: pointer;
+  }
+  i {
+    &::before {
+      margin-top: 4px;
+    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    border: 4px solid #fff;
+    border-radius: 100%;
+    margin-top: 25px;
+    font-size: 42px;
+  }
+}
+.instuctorDashboardTitle {
+  font-size: 42px;
+}
+.alignCenter {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 .card {
   text-align: center;

@@ -3,12 +3,59 @@
 .cardWrapper {
   margin-top: 15%;
 }
+h1 {
+  position: relative;
+  i {
+    position: absolute;
+    left: 0;
+  }
+}
+.closeNew {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 15px;
+  font-size: 28px;
+}
 .card {
+  form {
+    text-align: left;
+  }
+  position: relative;
   text-align: center;
   color: #fff;
   border-radius: 6px;
   background: rgba(13, 133, 200, 0.2);
-  padding: 25px;
+  padding: 60px 45px;
+}
+.formF2ield {
+  color: rgba(255, 255, 255, 0.3);
+  background-color: transparent;
+  border: 0;
+  box-shadow: none !important;
+  border-bottom: 1px solid rgba(235, 235, 235, 0.3);
+  border-radius: 0;
+  &:focus {
+    border-color: rgba(5, 192, 237, 0.5);
+  }
+}
+.actionContainer {
+  margin-top: 35px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.addCohort {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  margin-top: 35px;
+  cursor: pointer;
+  i {
+    margin-right: 25px;
+  }
 }
 .button {
   &:disabled {
@@ -16,13 +63,17 @@
     background: rgba(151, 151, 151, 0.15);
   }
   &:hover {
+    cursor: pointer;
+    color: #fff;
     background: rgba(151, 151, 151, 0.35);
   }
+  text-align: center;
+  display: block;
   color: #fff;
   border: 1px solid #979797;
-  width: 80%;
+  width: 70%;
   padding: 10px 10px;
-  font-size: 12px;
+  font-size: 32px;
   font-weight: 400;
   background: rgba(151, 151, 151, 0.25);
   margin: 25px auto 0 auto;

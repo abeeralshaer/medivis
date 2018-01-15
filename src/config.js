@@ -22,7 +22,7 @@ export const firebase =  {
 // Config for react-redux-firebase
 // For more details, visit http://docs.react-redux-firebase.com/history/v2.0.0/docs/api/enhancer.html
 export const reduxFirebase = {
-  userProfile: 'instructors', // root that user profiles are written to
+  userProfile: 'users', // root that user profiles are written to
   // updateProfileOnLogin: false, // enable/disable updating of profile on login
   // enableLogging: false, // enable/disable Firebase Database Logging
   // presence: 'presence',
