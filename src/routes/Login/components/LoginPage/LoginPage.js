@@ -21,26 +21,10 @@ export const LoginPage = ({ emailLogin, googleLogin, onSubmitFail }) => (
         </div>
       </Row>
       <Row>
-        <Col
-          xs={10}
-          sm={6}
-          md={3}
-          mdOffset={4}
-          style={{ float: "none", margin: "0 auto" }}
-        >
+        <Col xs={10} sm={6} md={4} mdOffset={4}>
           <LoginForm onSubmit={emailLogin} onSubmitFail={onSubmitFail} />
         </Col>
       </Row>
-      {/* <div className={classes.or}>or</div>
-<div className={classes.providers}>
-  <GoogleButton onClick={googleLogin} />
-</div> 
-<div className={classes.signup}>
-  <span className={classes.signupLabel}>Need an account?</span>
-  <Link className={classes.signupLink} to={SIGNUP_PATH}>
-    Sign Up
-  </Link>
-</div>*/}
     </Grid>
   </div>
 );

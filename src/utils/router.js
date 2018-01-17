@@ -29,6 +29,24 @@ export const UserIsAuthenticated = UserAuthWrapper({
   }
 });
 
+export const UserIsApproved = UserAuthWrapper({
+  // eslint-disable-line new-cap
+  wrapperDisplayName: "UserIsApproved",
+  LoadingComponent: LoadingSpinner,
+  allowRedirectBack: true,
+  redirectPath: (state, ownProps) => browserHistory.replace("/"),
+  authSelector: ({ firebase: { profile } }) => profile,
+  authenticatingSelector: ({ firebase: { auth, isInitializing } }) =>
+    !auth.isLoaded || isInitializing,
+  authenticatedSelector: ({ firebase: { auth, profile } }) =>
+    profile.isApproved && !auth.isEmpty,
+  predicate: profile => profile.isApproved,
+  redirectAction: newLoc => dispatch => {
+    browserHistory.replace("/"); // or routerActions.replace
+    dispatch({ type: "UNAUTHED_REDIRECT" });
+  }
+});
+
 /**
  * @description Higher Order Component that redirects to listings page or most
  * recent route instead rendering if user is not authenticated. This is useful
@@ -44,7 +62,7 @@ export const UserIsNotAuthenticated = UserAuthWrapper({
   LoadingComponent: LoadingSpinner,
   failureRedirectPath: (state, props) =>
     // redirect to page user was on or to list path
-    props.location.query.redirect || PROFESSOR_DASHBOARD,
+    props.location.query.redirect || "/",
   authSelector: ({ firebase: { auth } }) => auth,
   authenticatingSelector: ({ firebase: { auth, isInitializing } }) =>
     !auth.isLoaded || isInitializing,
@@ -57,5 +75,6 @@ export const UserIsNotAuthenticated = UserAuthWrapper({
 
 export default {
   UserIsAuthenticated,
-  UserIsNotAuthenticated
+  UserIsNotAuthenticated,
+  UserIsApproved
 };

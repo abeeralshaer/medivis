@@ -17,7 +17,9 @@ import {
   SIGNUP_PATH,
   COHORT_LIST,
   PROFESSOR_DASHBOARD,
-  COHORT_DETAILS
+  COHORT_DETAILS,
+  INSTRUCTOR_SIGNUP_PATH,
+  userTypes
 } from "constants";
 import defaultUserImage from "static/User.png";
 import classes from "./Navbar.scss";
@@ -60,7 +62,8 @@ export default class Navbar extends Component {
     isAnatomic: false
   };
   handleLogout = () => {
-    this.props.firebase.logout();
+    const { firebase: { logout }, profile } = this.props;
+    logout();
     this.context.router.push("/");
   };
 
@@ -83,7 +86,6 @@ export default class Navbar extends Component {
     const { profile, auth, location } = this.props;
     const { router: { location: { pathname } } } = this.context;
     const path = location.pathname ? location.pathname : pathname;
-    console.log(path, path.includes(COHORT_LIST));
     const dataLoaded = isLoaded(auth, profile);
     const authExists = isLoaded(auth) && !isEmpty(auth);
 
@@ -138,7 +140,7 @@ export default class Navbar extends Component {
     ) ? (
       <AnatomicBar
         profile={profile}
-        isProfessorRoute={path === '/'}
+        isProfessorRoute={path === "/"}
         isCohortRoute={path.includes(COHORT_LIST)}
         router={this.context.router}
         logout={this.handleLogout}

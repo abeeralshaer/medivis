@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { withHandlers } from "recompose";
 import { withFirebase } from "react-redux-firebase";
 import { spinnerWhileLoading } from "utils/components";
-import { UserIsAuthenticated } from "utils/router";
+import { UserIsAuthenticated, UserIsApproved } from "utils/router";
 import { values } from "utils/objectToArray";
 import classes from "./CohortList.scss";
 import {
@@ -23,6 +23,7 @@ import { map, get } from "lodash";
 import { COHORT_LIST } from "constants";
 import AddCohortForm from "../components/AddCohortForm";
 
+@UserIsApproved
 export class CohortList extends React.Component {
   static contextTypes = {
     router: PropTypes.object.isRequired
@@ -34,7 +35,7 @@ export class CohortList extends React.Component {
 
   handleSubmit(form) {
     const { description, name } = form;
-    const { firebase, authData: { uid }, institution } = this.props;
+    const { firebase, institution } = this.props;
     let institutionId = null;
 
     for (let key in institution) {
@@ -46,7 +47,7 @@ export class CohortList extends React.Component {
     }
     const body = {
       institutionId,
-      instructorId: uid,
+      instructorId: firebase.auth().currentUser.uid,
       description,
       name
     };
@@ -84,6 +85,7 @@ export class CohortList extends React.Component {
                     <div>
                       {map(cohorts, (cohort, key) => (
                         <Link
+                          key={key}
                           to={`${COHORT_LIST}/${key}`}
                           className={classes.button}
                         >

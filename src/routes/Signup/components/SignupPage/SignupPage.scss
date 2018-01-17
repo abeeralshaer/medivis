@@ -1,51 +1,45 @@
 @import "base";
-.container {
-  background: transparent;
-  padding-top: 1.5rem;
-  width: 100%;
+
+.cardWrapper {
+  margin-top: 15%;
 }
-.alignCenter {
+
+.closeNew {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 15px;
+  font-size: 28px;
+}
+.card {
+  form {
+    text-align: left;
+  }
+  position: relative;
+  text-align: center;
+  color: #fff;
+  border-radius: 6px;
+  background: rgba(13, 133, 200, 0.2);
+  padding: 60px 45px;
+}
+
+.actionContainer {
+  margin-top: 35px;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  height: 100%;
-}
-.title {
-  color: #fff;
-}
-.secondary {
-  color: #fff;
-}
-
-.progress {
-  margin-top: 5rem;
-}
-
-.or {
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-  font-size: 1.3rem;
-}
-
-.login {
-  @extend .flex-column-center;
   justify-content: center;
-  margin-top: 2rem;
-  &Link {
-    // color: $linkBlue;
-    font-size: 1.2rem;
-    &:hover {
-      // color: $materialBlue;
-    }
-  }
-  &Label {
-    @extend .flex-column-center;
-    justify-content: center;
-    font-size: 1.3rem;
-    margin-top: 2rem;
-    color: $mediumGray;
-  }
 }
 
-.providers {
-  margin-top: 1rem;
+.formField {
+  width: 100% !important;
+  label {
+    color: rgba(255, 255, 255, 0.3) !important;
+  }
+  div {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+  input {
+    color: #fff !important;
+  }
 }

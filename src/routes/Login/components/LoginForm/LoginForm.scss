@@ -1,85 +1,46 @@
 @import "base";
 
-.container {
-  @extend .flex-column;
-  margin: 1.5rem 0.2rem;
-  width: 100%;
-}
-.formField {
-  color: rgba(255, 255, 255, 0.3);
-  background-color: transparent;
-  border: 0;
-  box-shadow: none !important;
-  border-bottom: 1px solid rgba(235, 235, 235, 0.3);
-  border-radius: 0;
-  &:focus {
-    border-color: rgba(5, 192, 237, 0.5);
-  }
-}
-.submitBtn {
-  background: #05c0ed;
-  border: 0;
-  color: #fff;
-  padding: 5px 25px;
-  @include mobile {
-    width: 80%;
-  }
-  &:disabled {
-    &:hover {
-      background-color: darken(#05c0ed, 15%);
-      color: "#fff";
-    }
-  }
-  &.btn-default {
-    &:hover {
-      color: "#fff" !important;
-      background-color: darken(#05c0ed, 5%);
-    }
-  }
-}
-.inlineContainer {
-  @extend .flex-row;
-  justify-content: flex-start;
-  @include mobile {
-    flex-direction: column;
-  }
+.cardWrapper {
+  margin-top: 15%;
 }
 
-.submit {
-  @extend .flex-column-center;
+.closeNew {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 15px;
+  font-size: 28px;
+}
+.card {
+  form {
+    text-align: left;
+  }
+  position: relative;
   text-align: center;
+  color: #fff;
+  border-radius: 6px;
+  background: rgba(13, 133, 200, 0.2);
+  padding: 60px 45px;
 }
 
-.options {
-  @extend .flex-column;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-top: 25px;
-  @include mobile {
-    flex-direction: column;
-    align-items: center;
-    margin-top: 25px;
-  }
+.actionContainer {
+  margin-bottom: 35px;
+  margin-top: 35px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
-.remember {
-  @extend .flex-row;
-  flex-basis: 50%;
-  @include mobile {
-    display: none;
+
+.formField {
+  width: 100% !important;
+  label {
+    color: rgba(255, 255, 255, 0.3) !important;
   }
-}
-.secondaryLink {
-  font-size: 0.8rem;
-  margin-bottom: 5px;
-  color: #fff;
-  &:visited {
-    color: #fff;
+  div {
+    color: rgba(255, 255, 255, 0.5) !important;
   }
-  .hover {
-    color: "#a7a7a7";
-    text-decoration: underline;
-  }
-  @include mobile {
-    font-size: 1rem;
+  input {
+    color: #fff !important;
   }
 }

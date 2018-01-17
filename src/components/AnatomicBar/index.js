@@ -31,14 +31,15 @@ export default ({
       <h2 className={classes.usernameTitle}>
         {isProfessorRoute && (
           <span>
-            Welcome, {profile.name[0].toUpperCase()}
-            {profile.name.slice(1)}
+            Welcome,{" "}
+            {profile.name ? profile.name[0].toUpperCase() : profile.email}
+            {profile.name && profile.name.slice(1)}
           </span>
         )}
         {isCohortRoute && (
           <span>
-            {profile.name[0].toUpperCase()}
-            {profile.name.slice(1)}'s Cohorts
+            {profile.name ? profile.name[0].toUpperCase() : profile.email}
+            {profile.name && profile.name.slice(1)}'s Cohorts
           </span>
         )}
       </h2>

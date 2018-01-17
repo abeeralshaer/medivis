@@ -27,7 +27,7 @@ export const LoginForm = ({ pristine, submitting, handleSubmit }) => (
         className={classes.formField}
         name="email"
         type="text"
-        placeholder="Email"
+        label="Email"
         component={FormInput}
         validate={value => (value ? undefined : "Required")}
       />
@@ -35,38 +35,19 @@ export const LoginForm = ({ pristine, submitting, handleSubmit }) => (
         className={classes.formField}
         name="password"
         type="password"
-        placeholder="Password"
+        label="Password"
         component={FormInput}
         validate={value => (value ? undefined : "Required")}
       />
     </FormGroup>
-    <div className={classes.inlineContainer}>
-      <Button style={btnCustom} bsStyle="primary" type="submit" disabled>
-        Student
-      </Button>
-      <Button
-        style={btnCustom}
-        bsStyle="primary"
-        type="submit"
-        disabled={pristine || submitting}
-      >
-        {submitting ? "Loading" : "Professor"}
+    <div className={classes.actionContainer}>
+      <Button bsStyle="primary" type="submit" disabled={pristine || submitting}>
+        Login
       </Button>
     </div>
-    <div className={classes.options}>
-      {/*
-          <div className={classes.remember}>
-          <Checkbox
-            name="remember"
-            value="remember"
-            label="Remember"
-            labelStyle={{ fontSize: ".8rem" }}
-          />
-        </div>
-        */}
-      <Link className={classes.secondaryLink} to={SIGNUP_PATH}>
-        Don't have an account?
-      </Link>
+    <div className="text-center">
+      <Link to={SIGNUP_PATH}>Don't have an account? Click here</Link>
+      <br />
       <Link className={classes.secondaryLink} to={RECOVER_PATH}>
         Forgot Password?
       </Link>

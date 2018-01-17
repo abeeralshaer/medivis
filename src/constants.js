@@ -6,6 +6,7 @@ export const COHORT_LIST = "/cohorts";
 export const COHORT_DETAILS = ":cohortname";
 export const LOGIN_PATH = "/login";
 export const SIGNUP_PATH = "/signup";
+export const INSTRUCTOR_SIGNUP_PATH = "/instructor";
 
 export const ACCOUNT_FORM_NAME = "account";
 export const LOGIN_FORM_NAME = "login";
@@ -32,7 +33,14 @@ export const paths = {
   pfdashboard: PROFESSOR_DASHBOARD,
   detail: DETAIL_PATH,
   login: LOGIN_PATH,
-  signup: SIGNUP_PATH
+  signup: SIGNUP_PATH,
+  instructor: INSTRUCTOR_SIGNUP_PATH
 };
 
-export default { ...paths, ...formNames };
+export const userTypes = {
+  INSTRUCTOR: 0,
+  STUDENT: 1,
+  ADMIN: 2
+};
+
+export default { ...paths, ...formNames, userTypes };

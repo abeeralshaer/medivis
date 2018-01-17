@@ -1,9 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Field, reduxForm } from "redux-form";
-import { TextField } from "redux-form-material-ui";
-import RaisedButton from "material-ui/RaisedButton";
-import { SIGNUP_FORM_NAME, LOGIN_PATH } from "constants";
+import { Link } from "react-router";
+import { Field, reduxForm, Form } from "redux-form";
+import { map, get } from "lodash";
+import {
+  RECOVER_PATH,
+  SIGNUP_FORM_NAME,
+  LOGIN_PATH,
+  SIGNUP_PATH
+} from "constants";
 import { required, validateEmail } from "utils/form";
 import {
   Grid,
@@ -14,64 +19,65 @@ import {
   FormControl
 } from "react-bootstrap";
 import classes from "./SignupForm.scss";
-import { Link } from "react-router";
 import { FormInput } from "../../../../components/FormInput";
+import { FormSelect } from "../../../../components/FormSelect";
+import MenuItem from "material-ui/MenuItem";
+const btnCustom = {
+  marginLeft: 10
+};
 
-const SignupForm = ({ pristine, submitting, handleSubmit }) => (
-  <form className={classes.container} onSubmit={handleSubmit}>
+export const SignupForm = ({
+  pristine,
+  submitting,
+  handleSubmit,
+  institutions
+}) => (
+  <Form className={classes.container} onSubmit={handleSubmit}>
     <FormGroup>
-      <Field
-        className={classes.formField}
-        name="username"
-        type="text"
-        placeholder="Username"
-        component={FormInput}
-        validate={value => (value ? undefined : "Required")}
-      />
       <Field
         className={classes.formField}
         name="email"
         type="text"
-        placeholder="Email"
+        label="Enter email"
         component={FormInput}
         validate={value => (value ? undefined : "Required")}
       />
       <Field
         className={classes.formField}
+        name="name"
+        type="text"
+        label="Enter your name"
+        component={FormInput}
+        validate={value => (value ? undefined : "Required")}
+      />
+      <Field
+        name="institution"
+        className={classes.selectField}
+        component={FormSelect}
+        label="Choose institution"
+      >
+        {map(institutions, (item, key) => (
+          <MenuItem key={key} value={key} primaryText={item.name} />
+        ))}
+      </Field>
+      <Field
+        className={classes.formField}
         name="password"
         type="password"
-        placeholder="Password"
+        label="Enter password"
         component={FormInput}
         validate={value => (value ? undefined : "Required")}
       />
     </FormGroup>
-    <div className={classes.inlineContainer}>
-      <div className={classes.submit}>
-        <Button
-          className={classes.submitBtn}
-          type="submit"
-          disabled={pristine || submitting}
-        >
-          {submitting ? "Loading" : "Signup"}
-        </Button>
-      </div>
-      <div className={classes.options}>
-        {/*
-          <div className={classes.remember}>
-          <Checkbox
-            name="remember"
-            value="remember"
-            label="Remember"
-            labelStyle={{ fontSize: ".8rem" }}
-          />
-        </div>
-        */}
-        <Link className={classes.secondaryLink} to={LOGIN_PATH}>
-          Already have an account?
-        </Link>
-      </div>
+    <div className={classes.actionContainer}>
+      <Button bsStyle="primary" type="submit" disabled={pristine || submitting}>
+        Sign up
+      </Button>
     </div>
-  </form>
+    <div className="text-center">
+      <Link to={LOGIN_PATH}>Don't have an account? Click here</Link>
+    </div>
+  </Form>
 );
 
 SignupForm.propTypes = {
