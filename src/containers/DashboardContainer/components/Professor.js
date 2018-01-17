@@ -1,16 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import { compose } from "redux";
-import { connect } from "react-redux";
-import { withHandlers } from "recompose";
-import { withFirebase } from "react-redux-firebase";
-import { Grid, Row, Col } from "react-bootstrap";
-import { spinnerWhileLoading } from "utils/components";
-import { UserIsAuthenticated } from "utils/router";
-import classes from "./ProfessorDashboard.scss";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withHandlers } from 'recompose';
+import { withFirebase } from 'react-redux-firebase';
+import { Grid, Row, Col } from 'react-bootstrap';
+import { spinnerWhileLoading } from 'utils/components';
+import { UserIsAuthenticated } from 'utils/router';
+import classes from './styles/Professor.styles.scss';
 
-export class ProfessorDashboard extends React.Component {
+export class Professor extends React.Component {
   state = {
     isLearning: false,
     isInstructor: false
@@ -94,15 +94,8 @@ export class ProfessorDashboard extends React.Component {
   }
 }
 
-ProfessorDashboard.propTypes = {
+Professor.propTypes = {
   profile: PropTypes.object
 };
 
-export default compose(
-  UserIsAuthenticated, // redirect to /login if user is not authenticated
-  withFirebase, // adds props.firebase
-  connect(({ firebase: { profile } }) => ({
-    profile
-  })),
-  spinnerWhileLoading(["profile"])
-)(ProfessorDashboard);
+export default Professor;

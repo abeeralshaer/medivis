@@ -1,10 +1,10 @@
-import { UserAuthWrapper } from "redux-auth-wrapper";
-import { browserHistory } from "react-router";
-import { LIST_PATH, ACCOUNT_PATH, PROFESSOR_DASHBOARD } from "constants";
-import LoadingSpinner from "components/LoadingSpinner";
+import { UserAuthWrapper } from 'redux-auth-wrapper';
+import { browserHistory } from 'react-router';
+import { LIST_PATH, ACCOUNT_PATH, DASHBOARD } from 'constants';
+import LoadingSpinner from 'components/LoadingSpinner';
 
-const AUTHED_REDIRECT = "AUTHED_REDIRECT";
-const UNAUTHED_REDIRECT = "UNAUTHED_REDIRECT";
+const AUTHED_REDIRECT = 'AUTHED_REDIRECT';
+const UNAUTHED_REDIRECT = 'UNAUTHED_REDIRECT';
 
 /**
  * @description Higher Order Component that redirects to `/login` instead
@@ -14,7 +14,7 @@ const UNAUTHED_REDIRECT = "UNAUTHED_REDIRECT";
  */
 export const UserIsAuthenticated = UserAuthWrapper({
   // eslint-disable-line new-cap
-  wrapperDisplayName: "UserIsAuthenticated",
+  wrapperDisplayName: 'UserIsAuthenticated',
   LoadingComponent: LoadingSpinner,
   authSelector: ({ firebase: { auth } }) => auth,
   authenticatingSelector: ({ firebase: { auth, isInitializing } }) =>
@@ -24,17 +24,17 @@ export const UserIsAuthenticated = UserAuthWrapper({
     browserHistory.replace(newLoc);
     dispatch({
       type: UNAUTHED_REDIRECT,
-      payload: { message: "User is not authenticated." }
+      payload: { message: 'User is not authenticated.' }
     });
   }
 });
 
 export const UserIsApproved = UserAuthWrapper({
   // eslint-disable-line new-cap
-  wrapperDisplayName: "UserIsApproved",
+  wrapperDisplayName: 'UserIsApproved',
   LoadingComponent: LoadingSpinner,
   allowRedirectBack: true,
-  redirectPath: (state, ownProps) => browserHistory.replace("/"),
+  redirectPath: (state, ownProps) => browserHistory.replace('/'),
   authSelector: ({ firebase: { profile } }) => profile,
   authenticatingSelector: ({ firebase: { auth, isInitializing } }) =>
     !auth.isLoaded || isInitializing,
@@ -42,8 +42,26 @@ export const UserIsApproved = UserAuthWrapper({
     profile.isApproved && !auth.isEmpty,
   predicate: profile => profile.isApproved,
   redirectAction: newLoc => dispatch => {
-    browserHistory.replace("/"); // or routerActions.replace
-    dispatch({ type: "UNAUTHED_REDIRECT" });
+    browserHistory.replace('/'); // or routerActions.replace
+    dispatch({ type: 'UNAUTHED_REDIRECT' });
+  }
+});
+
+export const UserEmailVerified = UserAuthWrapper({
+  // eslint-disable-line new-cap
+  wrapperDisplayName: 'UserEmailVerified',
+  LoadingComponent: LoadingSpinner,
+  allowRedirectBack: true,
+  redirectPath: (state, ownProps) => browserHistory.replace('/'),
+  authSelector: ({ firebase: { auth } }) => auth,
+  authenticatingSelector: ({ firebase: { auth, isInitializing } }) =>
+    !auth.isLoaded || isInitializing,
+  authenticatedSelector: ({ firebase: { auth } }) =>
+    !auth.isEmpty && !auth.emailVerified,
+  predicate: auth => auth.emailVerified,
+  redirectAction: newLoc => dispatch => {
+    browserHistory.replace('/'); // or routerActions.replace
+    dispatch({ type: 'UNAUTHED_REDIRECT' });
   }
 });
 
@@ -57,12 +75,12 @@ export const UserIsApproved = UserAuthWrapper({
  */
 export const UserIsNotAuthenticated = UserAuthWrapper({
   // eslint-disable-line new-cap
-  wrapperDisplayName: "UserIsNotAuthenticated",
+  wrapperDisplayName: 'UserIsNotAuthenticated',
   allowRedirectBack: false,
   LoadingComponent: LoadingSpinner,
   failureRedirectPath: (state, props) =>
     // redirect to page user was on or to list path
-    props.location.query.redirect || "/",
+    props.location.query.redirect || '/',
   authSelector: ({ firebase: { auth } }) => auth,
   authenticatingSelector: ({ firebase: { auth, isInitializing } }) =>
     !auth.isLoaded || isInitializing,
@@ -76,5 +94,6 @@ export const UserIsNotAuthenticated = UserAuthWrapper({
 export default {
   UserIsAuthenticated,
   UserIsNotAuthenticated,
-  UserIsApproved
+  UserIsApproved,
+  UserEmailVerified
 };

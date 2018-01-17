@@ -1,39 +1,39 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { compose } from "redux";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import {
   firebaseConnect,
   isEmpty,
   populate,
   withFirebase
-} from "react-redux-firebase";
-import Collapsible from "react-collapsible";
-import { map, get } from "lodash";
-import { Bar } from "react-chartjs-2";
-import { Grid, Row, Col, Table, ProgressBar } from "react-bootstrap";
-import { spinnerWhileLoading } from "utils/components";
-import { values } from "utils/objectToArray";
-import { setGrades } from "utils/grades";
-import classes from "./CohortContainer.scss";
+} from 'react-redux-firebase';
+import Collapsible from 'react-collapsible';
+import { map, get } from 'lodash';
+import { Bar } from 'react-chartjs-2';
+import { Grid, Row, Col, Table, ProgressBar } from 'react-bootstrap';
+import { spinnerWhileLoading } from 'utils/components';
+import { values } from 'utils/objectToArray';
+import { setGrades } from 'utils/grades';
+import classes from './CohortContainer.scss';
 
 const quizPopulate = [
   {
-    child: "quizId",
-    root: "instructor-quizzes",
-    keyProp: "id"
+    child: 'quizId',
+    root: 'instructor-quizzes',
+    keyProp: 'id'
   }
 ];
 
 const studentAnswerPopulate = [
   {
-    child: "questionId",
-    root: "quiz-questions"
+    child: 'questionId',
+    root: 'quiz-questions'
   },
   {
-    child: "answerId",
-    root: "quiz-answers",
-    childParam: "expectedAnswer"
+    child: 'answerId',
+    root: 'quiz-answers',
+    childParam: 'expectedAnswer'
   }
 ];
 
@@ -49,7 +49,7 @@ class Cohort extends Component {
         yAxes: [
           {
             ticks: {
-              fontColor: "white",
+              fontColor: 'white',
               fontSize: 12
             }
           }
@@ -57,7 +57,7 @@ class Cohort extends Component {
         xAxes: [
           {
             ticks: {
-              fontColor: "white",
+              fontColor: 'white',
               fontSize: 12
             }
           }
@@ -66,8 +66,8 @@ class Cohort extends Component {
       legend: {
         display: true,
         labels: {
-          fillStyle: "#fff",
-          fontColor: "rgb(255, 99, 132)"
+          fillStyle: '#fff',
+          fontColor: 'rgb(255, 99, 132)'
         }
       },
       maintainAspectRatio: false
@@ -76,8 +76,8 @@ class Cohort extends Component {
 
   componentWillUnmount() {
     const { firebase } = this.props;
-    firebase.unWatchEvent("value", "student-answers");
-    firebase.unWatchEvent("value", "student-quizzes");
+    firebase.unWatchEvent('value', 'student-answers');
+    firebase.unWatchEvent('value', 'student-quizzes');
   }
 
   onStudentSelect = selectedStudent => {
@@ -87,10 +87,10 @@ class Cohort extends Component {
         selectedStudent,
         isQuestionsOpened: false
       });
-      firebase.watchEvent("value", "student-quizzes", "student-quizzes", {
+      firebase.watchEvent('value', 'student-quizzes', 'student-quizzes', {
         isQuery: true,
         queryId: `student-quizzes#orderByChild=studentId&equalTo=${selectedStudent}`,
-        queryParams: ["orderByChild=studentId", `equalTo=${selectedStudent}`],
+        queryParams: ['orderByChild=studentId', `equalTo=${selectedStudent}`],
         populates: quizPopulate
       });
     } else {
@@ -98,8 +98,8 @@ class Cohort extends Component {
         selectedStudent,
         isQuestionsOpened: false
       });
-      firebase.unWatchEvent("value", "student-answers");
-      firebase.unWatchEvent("value", "student-quizzes");
+      firebase.unWatchEvent('value', 'student-answers');
+      firebase.unWatchEvent('value', 'student-quizzes');
     }
   };
 
@@ -107,7 +107,7 @@ class Cohort extends Component {
     const { isQuestionsOpened } = this.state;
     const { firebase } = this.props;
     if (isQuestionsOpened === quizId) {
-      firebase.unWatchEvent("value", "student-answers");
+      firebase.unWatchEvent('value', 'student-answers');
       this.setState({
         isQuestionsOpened: null
       });
@@ -116,14 +116,14 @@ class Cohort extends Component {
         isQuestionsOpened: quizId
       });
       this.props.firebase.watchEvent(
-        "value",
-        "student-answers",
-        "student-answers",
+        'value',
+        'student-answers',
+        'student-answers',
         {
           isQuery: true,
           queryId: `student-answers#orderByChild=quizId-studentId&equalTo=${quizId}-${studentId}`,
           queryParams: [
-            "orderByChild=quizId-studentId",
+            'orderByChild=quizId-studentId',
             `equalTo=${quizId}-${studentId}`
           ],
           populates: studentAnswerPopulate
@@ -139,9 +139,9 @@ class Cohort extends Component {
       <td>{item.submittedAnswer}</td>
       <td>
         {item.answerId === item.submittedAnswer ? (
-          <i style={{ color: "#27ae60" }} className="fa fa-check" />
+          <i style={{ color: '#27ae60' }} className="fa fa-check" />
         ) : (
-          <i style={{ color: "#c0392b" }} className="fa fa-close" />
+          <i style={{ color: '#c0392b' }} className="fa fa-close" />
         )}
       </td>
     </tr>
@@ -153,15 +153,15 @@ class Cohort extends Component {
     const row = (
       <tr key={quiz.quizId.id}>
         <td>{quiz.quizId.name}</td>
-        <td style={{ color: quiz.completed ? "#27ae60" : "#c0392b" }}>
-          {quiz.completed ? "Completed" : "Incomplete"}
+        <td style={{ color: quiz.completed ? '#27ae60' : '#c0392b' }}>
+          {quiz.completed ? 'Completed' : 'Incomplete'}
         </td>
         <td>{quiz.score}</td>
         <td
           className={classes.onQuestionsLoad}
           onClick={() => this.onQuestionsLoad(quiz.quizId.id, quiz.studentId)}
         >
-          Details{" "}
+          Details{' '}
           {isQuestionsOpened ? (
             <i className="fa fa-caret-down" />
           ) : (
@@ -181,7 +181,7 @@ class Cohort extends Component {
       studentAnswers,
       firebase
     } = this.props;
-
+    console.log(this.props);
     const {
       isSelected,
       selectedStudent,
@@ -193,12 +193,12 @@ class Cohort extends Component {
       labels: Array.from(values(studentQuizzes)).map(quiz => quiz.quizId.name),
       datasets: [
         {
-          label: "Class progress",
-          backgroundColor: "rgba(255,99,132,0.2)",
-          borderColor: "rgba(255,99,132,1)",
+          label: 'Class progress',
+          backgroundColor: 'rgba(255,99,132,0.2)',
+          borderColor: 'rgba(255,99,132,1)',
           borderWidth: 1,
-          hoverBackgroundColor: "rgba(255,99,132,0.4)",
-          hoverBorderColor: "rgba(255,99,132,1)",
+          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+          hoverBorderColor: 'rgba(255,99,132,1)',
           data: Array.from(values(studentQuizzes)).map(quiz => quiz.score)
         }
       ]
@@ -227,7 +227,9 @@ class Cohort extends Component {
                       {selectedStudent === item.studentId.id && (
                         <i className="fa fa-circle" />
                       )}
-                      <span>{item.studentId.name}</span>
+                      <span>
+                        {item.studentId.firstName} {item.studentId.lastName}
+                      </span>
                     </div>
                   ))}
                 </Row>
@@ -239,7 +241,7 @@ class Cohort extends Component {
               <div className={classes.cardWrapper}>
                 <div className={classes.header}>My Announcements</div>
                 <div className={classes.scrollable}>
-                  <div className={classes.card} style={{ padding: "10px 0" }}>
+                  <div className={classes.card} style={{ padding: '10px 0' }}>
                     <Collapsible
                       classParentString={classes.Collapsible}
                       triggerOpenedClassName={classes.CollapsibleOpen}
@@ -253,11 +255,11 @@ class Cohort extends Component {
                               <i className="fa fa-caret-down" />
                             ) : (
                               <i className="fa fa-caret-right " />
-                            )}{" "}
+                            )}{' '}
                           </span>
                           <span className={classes.inlineBetween}>
                             <span className={classes.anounceTitle}>
-                              Announcement #1 (Most recent){" "}
+                              Announcement #1 (Most recent){' '}
                             </span>
                             <span>12/25/2017</span>
                             <span>6:37PM</span>
@@ -287,11 +289,11 @@ class Cohort extends Component {
                               <i className="fa fa-caret-down" />
                             ) : (
                               <i className="fa fa-caret-right " />
-                            )}{" "}
+                            )}{' '}
                           </span>
                           <span className={classes.inlineBetween}>
                             <span className={classes.anounceTitle}>
-                              Announcement #1 (Most recent){" "}
+                              Announcement #1 (Most recent){' '}
                             </span>
                             <span>12/25/2017</span>
                             <span>6:37PM</span>
@@ -377,8 +379,8 @@ Cohort.propTypes = {
   params: PropTypes.object.isRequired
 };
 const populates = [
-  { child: "studentId", root: "users", keyProp: "id" },
-  { child: "cohortId", root: "institution-cohorts" }
+  { child: 'studentId', root: 'users', keyProp: 'id' },
+  { child: 'cohortId', root: 'institution-cohorts' }
 ];
 
 const enhance = compose(
@@ -386,7 +388,7 @@ const enhance = compose(
   firebaseConnect(({ params: { cohortname } }) => [
     {
       path: `student-cohorts`,
-      queryParams: ["orderByChild=cohortId", `equalTo=${cohortname}`],
+      queryParams: ['orderByChild=cohortId', `equalTo=${cohortname}`],
       populates
     }
   ]),
@@ -395,17 +397,17 @@ const enhance = compose(
       return {
         profile,
         avatarUrl: profile.avatarUrl,
-        studentCohorts: populate(firebase, "student-cohorts", populates),
-        studentQuizzes: populate(firebase, "student-quizzes", quizPopulate),
+        studentCohorts: populate(firebase, 'student-cohorts', populates),
+        studentQuizzes: populate(firebase, 'student-quizzes', quizPopulate),
         studentAnswers: populate(
           firebase,
-          "student-answers",
+          'student-answers',
           studentAnswerPopulate
         )
       };
     }
   ),
-  spinnerWhileLoading(["studentCohorts"])
+  spinnerWhileLoading(['studentCohorts'])
 );
 
 export default enhance(Cohort);

@@ -1,0 +1,68 @@
+@import 'base';
+
+.card {
+  position: relative;
+  text-align: center;
+  color: #fff;
+  border-radius: 6px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background: rgba(13, 133, 200, 0.2);
+  padding: 45px;
+  max-height: calc(100vh - 240px);
+  overflow-y: scroll;
+}
+
+.button {
+  &:disabled {
+    cursor: not-allowed;
+    background: rgba(151, 151, 151, 0.15);
+  }
+  &:hover {
+    cursor: pointer;
+    color: #fff;
+    background: rgba(151, 151, 151, 0.35);
+  }
+  text-align: center;
+  display: block;
+  color: #fff;
+  border: 1px solid #979797;
+  padding: 10px 10px;
+  font-size: 32px;
+  font-weight: 400;
+  background: rgba(151, 151, 151, 0.25);
+  margin: 5px 0;
+  flex-grow: 2;
+}
+
+.header {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  font-size: 22px;
+  text-align: center;
+  padding: 10px;
+  background: rgba(13, 133, 200, 0.35);
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.leave {
+  &:hover {
+    background: rgba(192, 57, 43, 0.45);
+  }
+  border: 1px solid #979797;
+  border-left: 0;
+  transition: background 0.15s ease-in;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32px;
+  background: rgba(192, 57, 43, 0.75);
+  outline: 0;
+  box-shadow: 0;
+  margin: 5px 0;
+  padding: 10px;
+}

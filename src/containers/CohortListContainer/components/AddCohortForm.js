@@ -1,8 +1,8 @@
-import React, { cloneElement } from "react";
-import PropTypes from "prop-types";
-import { Field, reduxForm, Form } from "redux-form";
-import { connect } from "react-redux";
-import { required, validateEmail } from "utils/form";
+import React, { cloneElement } from 'react';
+import PropTypes from 'prop-types';
+import { Field, reduxForm, Form } from 'redux-form';
+import { connect } from 'react-redux';
+import { required, validateEmail } from 'utils/form';
 import {
   Grid,
   Row,
@@ -12,10 +12,10 @@ import {
   Modal,
   Button,
   FormGroup
-} from "react-bootstrap";
-import { COHORT_LIST } from "constants";
-import { FormInput } from "../../../components/FormInput";
-import classes from "./AddCohortForm.scss";
+} from 'react-bootstrap';
+import { COHORT_LIST } from 'constants';
+import { FormInput } from '../../../components/FormInput';
+import classes from './styles/AddCohortForm.styles.scss';
 
 const AddCohortForm = ({ onCloseForm, handleSubmit, pristine, submitting }) => (
   <div className={classes.cardWrapper}>
@@ -31,7 +31,7 @@ const AddCohortForm = ({ onCloseForm, handleSubmit, pristine, submitting }) => (
             type="text"
             label="Cohort's name"
             component={FormInput}
-            validate={value => (value ? undefined : "Required")}
+            validate={value => (value ? undefined : 'Required')}
           />
           <Field
             className={classes.formField}
@@ -39,7 +39,7 @@ const AddCohortForm = ({ onCloseForm, handleSubmit, pristine, submitting }) => (
             type="text"
             label="Description"
             component={FormInput}
-            validate={value => (value ? undefined : "Required")}
+            validate={value => (value ? undefined : 'Required')}
           />
         </FormGroup>
         <div className={classes.actionContainer}>
@@ -64,5 +64,5 @@ AddCohortForm.propTypes = {
 };
 
 export default reduxForm({
-  form: "ADD_COHORT"
+  form: 'ADD_COHORT'
 })(AddCohortForm);

@@ -1,7 +1,7 @@
-import React from "react";
-import classes from "./AnatomicBar.scss";
-import { Link } from "react-router";
-import { LIST_PATH, ACCOUNT_PATH, LOGIN_PATH, SIGNUP_PATH } from "constants";
+import React from 'react';
+import classes from './AnatomicBar.scss';
+import { Link } from 'react-router';
+import { LIST_PATH, ACCOUNT_PATH, LOGIN_PATH, SIGNUP_PATH } from 'constants';
 
 export default ({
   isAuth,
@@ -31,15 +31,19 @@ export default ({
       <h2 className={classes.usernameTitle}>
         {isProfessorRoute && (
           <span>
-            Welcome,{" "}
-            {profile.name ? profile.name[0].toUpperCase() : profile.email}
-            {profile.name && profile.name.slice(1)}
+            Welcome,{' '}
+            {profile.firstName
+              ? profile.firstName[0].toUpperCase()
+              : profile.email}
+            {profile.firstName && profile.firstName.slice(1)}
           </span>
         )}
         {isCohortRoute && (
           <span>
-            {profile.name ? profile.name[0].toUpperCase() : profile.email}
-            {profile.name && profile.name.slice(1)}'s Cohorts
+            {profile.firstName
+              ? profile.firstName[0].toUpperCase()
+              : profile.email}
+            {profile.firstName && profile.firstName.slice(1)}'s Cohorts
           </span>
         )}
       </h2>

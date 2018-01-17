@@ -1,39 +1,99 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
-import GoogleButton from "react-google-button";
-import { withFirebase, firebaseConnect } from "react-redux-firebase";
-import { withHandlers, pure, compose } from "recompose";
-import { withNotifications } from "modules/notification";
-import { UserIsNotAuthenticated } from "utils/router";
-import { Grid, Row, Col } from "react-bootstrap";
-import { connect } from "react-redux";
-import { userTypes } from "constants";
-import LoginForm from "../SignupForm";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import GoogleButton from 'react-google-button';
+import { withFirebase, firebaseConnect } from 'react-redux-firebase';
+import { withHandlers, pure, compose } from 'recompose';
+import { withNotifications } from 'modules/notification';
+import { UserIsNotAuthenticated } from 'utils/router';
+import { Grid, Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { userTypes } from 'constants';
+import SignupCommonData from '../SignupForm/SignupCommonData';
+import SignupForm from '../SignupForm';
 
-import classes from "./SignupPage.scss";
+import classes from './SignupPage.scss';
 
-export const SignupPage = ({ emailSignup, onSubmitFail, institutions }) => (
-  <div className={classes.alignCenter}>
-    <Grid className={classes.container}>
-      <Row>
-        <div className="text-center">
-          <h1 className={classes.title}>AnatomyX</h1>
-          <h2 className={classes.secondary}>Log Into Instructor Account</h2>
-        </div>
-      </Row>
-      <Row>
-        <Col xs={10} sm={6} md={4} mdOffset={4}>
-          <LoginForm
-            institutions={institutions}
-            onSubmit={emailSignup}
-            onSubmitFail={onSubmitFail}
-          />
-        </Col>
-      </Row>
-    </Grid>
-  </div>
-);
+class SignupPage extends Component {
+  state = {
+    page: 1
+  };
+  nextPage = () => {
+    this.setState({ page: this.state.page + 1 });
+  };
+
+  handleSubmit = async ({
+    pin,
+    fname,
+    lname,
+    password,
+    eaddress,
+    status,
+    institution
+  }) => {
+    const { firebase } = this.props;
+    const request = {
+      firstName: fname,
+      lastName: lname,
+      email: eaddress,
+      type: status
+    };
+
+    if (status) {
+      request.pin = pin;
+    } else {
+      request.isApproved = true;
+    }
+
+    await firebase.createUser(
+      {
+        email: request.email,
+        password
+      },
+      request
+    );
+
+    firebase.auth().onAuthStateChanged(user => {
+      user.sendEmailVerification();
+    });
+
+    const user = await firebase.auth().currentUser;
+    if (!status) {
+      firebase.push('institution-instructors', {
+        instructorId: user.uid,
+        institutionId: institution
+      });
+    }
+  };
+
+  render() {
+    const { emailSignup, onSubmitFail, institutions } = this.props;
+    const { page } = this.state;
+    return (
+      <div className={classes.alignCenter}>
+        <Grid className={classes.container}>
+          <Row>
+            <Col xs={10} sm={6} md={4} mdOffset={4}>
+              {page === 1 && (
+                <SignupCommonData
+                  onSubmitFail={onSubmitFail}
+                  onSubmit={this.nextPage}
+                />
+              )}
+              {page === 2 && (
+                <SignupForm
+                  institutions={institutions}
+                  onSubmit={this.handleSubmit}
+                  onSubmitFail={onSubmitFail}
+                />
+              )}
+            </Col>
+          </Row>
+        </Grid>
+      </div>
+    );
+  }
+}
 
 SignupPage.propTypes = {
   firebase: PropTypes.shape({
@@ -51,31 +111,15 @@ export default compose(
   withFirebase, // add props.firebase
   firebaseConnect(props => [
     {
-      path: "/institutions"
+      path: '/institutions'
     }
   ]),
   connect(state => ({
-    institutions: state.firebase.data["institutions"]
+    institutions: state.firebase.data['institutions']
   })),
   withHandlers({
     onSubmitFail: props => (formErrs, dispatch, err) =>
-      props.showError(formErrs ? "Form Invalid" : err.message || "Error"),
-    emailSignup: ({ firebase, showError }) => creds =>
-      firebase
-        .createUser(creds, {
-          name: creds.name,
-          email: creds.email,
-          isApproved: true,
-          type: userTypes.INSTRUCTOR
-        })
-        .then(async () => {
-          const user = await firebase.auth().currentUser;
-          firebase.push("institution-instructors", {
-            instructorId: user.uid,
-            institutionId: creds.institution
-          });
-        })
-        .catch(err => showError(err.message))
+      props.showError(formErrs ? 'Form Invalid' : err.message || 'Error')
   }),
   pure
 )(SignupPage);
