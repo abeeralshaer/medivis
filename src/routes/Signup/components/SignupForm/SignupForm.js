@@ -102,7 +102,18 @@ let SignupForm = ({
           </Field>
         </div>
         {!!isStudent && (
+          <div>
           <Field
+          name="institution"
+          className={classes.selectField}
+          component={FormSelect}
+          label="Choose institution"
+        >
+          {map(institutions, (item, key) => (
+            <MenuItem key={key} value={key} primaryText={item.name} />
+          ))}
+        </Field>
+        <Field
             className={classes.formField}
             name="pin"
             type="password"
@@ -110,6 +121,8 @@ let SignupForm = ({
             component={FormInput}
             validate={value => pin(value)}
           />
+          </div>
+          
         )}
         {isStudent === 0 && (
           <Field

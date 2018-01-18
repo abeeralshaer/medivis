@@ -63,6 +63,11 @@ class SignupPage extends Component {
         instructorId: user.uid,
         institutionId: institution
       });
+    } else {
+      firebase.push('institution-students', {
+        studentId: user.uid,
+        institutionId: institution
+      });
     }
   };
 
