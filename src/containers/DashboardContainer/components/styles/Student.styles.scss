@@ -72,3 +72,19 @@
   color: rgba(231, 76, 60, 1);
   margin-left: 25px;
 }
+
+.sidebar {
+  color: #fff;
+  font-size: 36px;
+  background: url("../../../../static/menu.png");
+  background-size: cover;
+  width: 48px;
+  height: 48px;
+}
+
+.rootsidebar {
+  width: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
