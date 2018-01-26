@@ -1,17 +1,19 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Link } from 'react-router'
-import { Grid, Row, Col } from 'react-bootstrap'
-import ReactSideBar from 'react-sidebar'
-import SideBarContent from 'components/SideBar'
-import Calendar from 'components/Calender'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { Grid, Row, Col } from 'react-bootstrap';
+import ReactSideBar from 'react-sidebar';
+import * as d3 from 'd3';
+import SideBarContent from 'components/SideBar';
+import Calendar from 'components/Calender';
+import Chart from './Chart';
 
-import classes from './styles/Student.styles.scss'
+import classes from './styles/Student.styles.scss';
 
 class Student extends Component {
-   state = {
+  state = {
     sidebarOpen: false
-  }
+  };
 
   static propTypes = {
     profile: PropTypes.shape({
@@ -20,14 +22,14 @@ class Student extends Component {
       email: PropTypes.string.isRequired,
       pin: PropTypes.string.isRequired
     })
-  }
+  };
 
   onSetSidebarOpen = open => {
-    this.setState({ sidebarOpen: open })
-  }
+    this.setState({ sidebarOpen: open });
+  };
 
   render() {
-    const { profile, emailVerified } = this.props
+    const { profile, emailVerified } = this.props;
     return (
       <ReactSideBar
         sidebarClassName={classes.rootsidebar}
@@ -38,10 +40,9 @@ class Student extends Component {
         // open={this.state.sidebarOpen}
         // onSetOpen={this.onSetSidebarOpen}
       >
-        <Grid style={{width: '88%'}}>
+        <Grid style={{ width: '88%' }}>
           <Row>
             <Col md={12}>
-
               <div className={classes.profileContainer}>
                 <div className={classes.profileAvatar} />
                 <div className={classes.flexColumn}>
@@ -71,7 +72,7 @@ class Student extends Component {
             <Col md={8}>
               <div className={classes.subContainer}>
                 <div className={classes.flexColumn}>
-                  <Calendar style={{  width: '100%'}}/>
+                  <Calendar style={{ width: '100%' }} />
                 </div>
               </div>
             </Col>
@@ -79,6 +80,7 @@ class Student extends Component {
               <div className={classes.subContainer}>
                 <div className={classes.flexColumn}>
                   <div className={classes.profileMeta}>
+                    <Chart />
                   </div>
                 </div>
               </div>
@@ -86,8 +88,8 @@ class Student extends Component {
           </Row>
         </Grid>
       </ReactSideBar>
-    )
+    );
   }
 }
 
-export default Student
+export default Student;
