@@ -41,7 +41,6 @@ class Student extends Component {
         <Grid style={{width: '88%'}}>
           <Row>
             <Col md={12}>
-
               <div className={classes.profileContainer}>
                 <div className={classes.profileAvatar} />
                 <div className={classes.flexColumn}>
@@ -67,13 +66,9 @@ class Student extends Component {
               </div>
             </Col>
           </Row>
-          <Row style={{ background: '#303338', marginTop: 10 }}>
+          <Row style={{ background: 'white', margin: 10, padding: 10 }}>
             <Col md={8}>
-              <div className={classes.subContainer}>
-                <div className={classes.flexColumn}>
-                  <Calendar style={{  width: '100%'}}/>
-                </div>
-              </div>
+              <Calendar/>
             </Col>
             <Col md={4}>
               <div className={classes.subContainer}>

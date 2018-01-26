@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import { Calendar } from 'react-calendar-component';
+import { Calendar } from './calendar';
 import moment from 'moment';
 import cx from 'classnames';
 import 'moment/locale/nb';
-import classes from './style.scss'
+import classes from './styles.scss'
 
 class CalendarExample extends Component {
   state = {
@@ -20,18 +20,14 @@ class CalendarExample extends Component {
         renderDay={({ day, classNames, onPickDate }) => (
           <div
             key={day.format()}
-            className={cx(
-              'Calendar-grid-item',
-              day.isSame(moment(), 'day') && 'Calendar-grid-item--current',
-              classNames
-            )}
+            className={classes.cell}
             onClick={e => onPickDate(day)}
           >
             {day.format('D')}
           </div>
         )}
         renderHeader={({ date, onPrevMonth, onNextMonth }) => (
-          <div className="Calendar-header">
+          <div className={classes.header}>
             <button onClick={onPrevMonth}>«</button>
             <div className="Calendar-header-currentDate">
               {date.format('MMMM YYYY')}
