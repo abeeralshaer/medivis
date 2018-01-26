@@ -4,11 +4,12 @@ import { Link } from 'react-router'
 import { Grid, Row, Col } from 'react-bootstrap'
 import ReactSideBar from 'react-sidebar'
 import SideBarContent from 'components/SideBar'
+import Calendar from 'components/Calender'
 
 import classes from './styles/Student.styles.scss'
 
 class Student extends Component {
-  state = {
+   state = {
     sidebarOpen: false
   }
 
@@ -32,17 +33,15 @@ class Student extends Component {
         sidebarClassName={classes.rootsidebar}
         dragToggleDistance={50}
         touch
+        docked
         sidebar={<SideBarContent />}
-        open={this.state.sidebarOpen}
-        onSetOpen={this.onSetSidebarOpen}
+        // open={this.state.sidebarOpen}
+        // onSetOpen={this.onSetSidebarOpen}
       >
-        <Grid>
+        <Grid style={{width: '88%'}}>
           <Row>
-            <Col xs={10} sm={8} smOffset={2} md={6} mdOffset={3}>
-              <div
-                className={classes.sidebar}
-                onClick={() => this.onSetSidebarOpen(true)}
-              />
+            <Col md={12}>
+
               <div className={classes.profileContainer}>
                 <div className={classes.profileAvatar} />
                 <div className={classes.flexColumn}>
@@ -61,9 +60,26 @@ class Student extends Component {
                   )}
                   {emailVerified && (
                     <Link to="/cohorts" className={classes.button}>
-                      {profile.firstName}'s Cohorts
+                      {profile.firstName} s Cohorts
                     </Link>
                   )}
+                </div>
+              </div>
+            </Col>
+          </Row>
+          <Row style={{ background: '#303338', marginTop: 10 }}>
+            <Col md={8}>
+              <div className={classes.subContainer}>
+                <div className={classes.flexColumn}>
+                  <Calendar style={{  width: '100%'}}/>
+                </div>
+              </div>
+            </Col>
+            <Col md={4}>
+              <div className={classes.subContainer}>
+                <div className={classes.flexColumn}>
+                  <div className={classes.profileMeta}>
+                  </div>
                 </div>
               </div>
             </Col>
