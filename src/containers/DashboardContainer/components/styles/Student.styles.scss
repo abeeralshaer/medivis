@@ -46,7 +46,6 @@
   text-align: center;
   color: #fff;
   background: #30333C;
-  padding: 25px;
   margin-top: 10px;
   box-shadow: 0px 1px 3px #333;
   h3 {
@@ -54,6 +53,21 @@
   }
   display: flex;
   flex-direction: row;
+}
+.tableContainer{
+  margin: 10;
+  padding: 15;
+  text-align: left;
+  color: #fff;
+  background: #303338;
+  padding: 10px;
+  margin-top: 10px;
+  box-shadow: 0px 1px 3px #333;
+  h3 {
+    margin-top: 0;
+  }
+  display: flex;
+  flex-direction: column;
   align-items: flex-start;
 }
 
@@ -75,14 +89,15 @@
   margin-left: 25px;
 }
 
-.sidebar {
+.menuIcon {
   color: #fff;
   font-size: 36px;
   background: url("../../../../static/menu.png");
   background-size: cover;
-  width: 48px;
-  height: 48px;
-  margin-top: 10px;
+  width: 20px;
+  height: 20px;
+  margin: 2px;
+  margin-right: 10px;
 }
 
 .rootsidebar {
@@ -91,4 +106,157 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.calendarHeader{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  font-size: 15px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.addButtonContainer{
+  z-index: 2px;
+  display: flex;
+  bottom: 0px;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  font-size: 15px;
+  font-weight: bold;
+  margin-left: 5px;
+  margin-right: 20px;
+}
+
+.calendarFooter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.orangeCircle {
+  display: flex;
+  flex-direction: row;
+  background: orange;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  background-size: cover;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  box-shadow: 0px 1px 3px #333;
+}
+
+.addButton {
+  color: #fff;
+  font-size: 36px;
+  background: url("../../../../static/add.png");
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.circleInfo {
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.blueCircle {
+  display: flex;
+  flex-direction: row;
+  background: #4164A4;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  background-size: cover;
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+}
+
+.arrowDown {
+  color: #fff;
+  margin-right: 5px;
+  font-size: 36px;
+  background: url("../../../../static/arrow-down.png");
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.arrowUp {
+  color: #fff;
+  margin-right: 5px;
+  font-size: 36px;
+  background: url("../../../../static/arrow-up.png");
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.tableRow {
+  background-color: #0A5395;
+  box-shadow: 0px 4px 4px #292B2E;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.detailsTableRow {
+  background: #30333C;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.quizesTableRow {
+  display: flex;
+  flex-direction: column;
+  background: '#30333C';
+}
+
+.quizesTable {
+  display: flex;
+  flex-direction: column;
+  background: '#30333C';
+  box-shadow: 2px 2px 4px 4px #292B2E;
+}
+
+.detailsTableHead {
+  background: '#30333C';
+  padding: 5px;
+}
+
+.quizesTableHeader {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  font-size: 17px;
+  font-weight: 500;
+}
+.detailsCell {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.calendarContainer {
+  background: #303338;
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }

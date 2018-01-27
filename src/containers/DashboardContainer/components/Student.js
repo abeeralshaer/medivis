@@ -1,88 +1,55 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Link } from 'react-router'
-import { Grid, Row, Col } from 'react-bootstrap'
-import ReactSideBar from 'react-sidebar'
-import SideBarContent from 'components/SideBar'
-import Calendar from 'components/Calender'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
+import { Grid, Row, Col } from 'react-bootstrap';
+import ReactSideBar from 'react-sidebar';
+import SideBarContent from 'components/SideBar';
+import Calendar from 'components/Calender';
+import QuizesTable from './QuizesTable';
 
-import classes from './styles/Student.styles.scss'
+import classes from './styles/Student.styles.scss';
 
-class Student extends Component {
-   state = {
-    sidebarOpen: false
-  }
+export const Student = ({ profile, emailVerified }) => (
+  <ReactSideBar
+    sidebarClassName={classes.rootsidebar}
+    dragToggleDistance={50}
+    touch
+    docked
+    sidebar={<SideBarContent />}
+  >
+    <Grid style={{ width: '88%' }}>
+      <QuizesTable />
+      <Row className={classes.calendarContainer}>
+        <Col md={6}>
+          <div className={classes.calendarHeader}>Calendar</div>
+          <div className={classes.addButtonContainer}>
+            <div style={{ background: 'orange', alignItems: 'center', marginTop: 25, marginRight: 20, position: 'absolute', justifyContent: 'center', display: 'flex', height: 40, width: 40, borderRadius: 50, boxShadow: 3 }}>
+              <div className={classes.addButton} />
+            </div>
+          </div>
+          <Calendar />
+          <div className={classes.calendarFooter}>
+            <div className={classes.orangeCircle} />
+            <div className={classes.circleInfo}>Some Info written here</div>
+            <div className={classes.blueCircle} />
+            <div className={classes.circleInfo}>Some Info written here</div>
+          </div>
+        </Col>
+        <Col md={6}>
+          <div className={classes.subContainer} />
+        </Col>
+      </Row>
+    </Grid>
+  </ReactSideBar>
+)
 
-  static propTypes = {
-    profile: PropTypes.shape({
-      firstName: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired,
-      email: PropTypes.string.isRequired,
-      pin: PropTypes.string.isRequired
-    })
-  }
+Student.propTypes = {
+  profile: PropTypes.shape({
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    pin: PropTypes.string.isRequired,
+  }),
+};
 
-  onSetSidebarOpen = open => {
-    this.setState({ sidebarOpen: open })
-  }
-
-  render() {
-    const { profile, emailVerified } = this.props
-    return (
-      <ReactSideBar
-        sidebarClassName={classes.rootsidebar}
-        dragToggleDistance={50}
-        touch
-        docked
-        sidebar={<SideBarContent />}
-        // open={this.state.sidebarOpen}
-        // onSetOpen={this.onSetSidebarOpen}
-      >
-        <Grid style={{width: '88%'}}>
-          <Row>
-            <Col md={12}>
-              <div className={classes.profileContainer}>
-                <div className={classes.profileAvatar} />
-                <div className={classes.flexColumn}>
-                  <div className={classes.profileMeta}>
-                    <h3>
-                      {profile.firstName} {profile.lastName}
-                    </h3>
-                    <h4>
-                      Pin: <b style={{ marginLeft: 15 }}>{profile.pin}</b>
-                    </h4>
-                  </div>
-                  {!emailVerified && (
-                    <p className={classes.verify}>
-                      Please verify email at <b>{profile.email}</b>
-                    </p>
-                  )}
-                  {emailVerified && (
-                    <Link to="/cohorts" className={classes.button}>
-                      {profile.firstName} s Cohorts
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </Col>
-          </Row>
-          <Row style={{ background: 'white', margin: 10, padding: 10 }}>
-            <Col md={8}>
-              <Calendar/>
-            </Col>
-            <Col md={4}>
-              <div className={classes.subContainer}>
-                <div className={classes.flexColumn}>
-                  <div className={classes.profileMeta}>
-                  </div>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </Grid>
-      </ReactSideBar>
-    )
-  }
-}
-
-export default Student
+export default Student;

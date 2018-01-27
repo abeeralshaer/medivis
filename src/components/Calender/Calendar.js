@@ -40,6 +40,7 @@ export default class Calendar extends Component {
           classNames
         )}
         onClick={e => onPickDate(day)}
+        role="presentation"
       >
         {day.format('D')}
       </div>
@@ -93,32 +94,34 @@ export default class Calendar extends Component {
           {createDateObjects(date, weekOffset).map((day, i) =>{
             if(i < 7) {
             return  (
-
               renderDay({ ...day, onPickDate })
-
             )
             }}
           )}
         </div>
         <div className={classes.row}>
-          {createDateObjects(date, weekOffset).map((day, i) =>{
-            if(i > 6 && i < 14){
-            return  renderDay({ ...day, onPickDate })
-            }}
-          )}
+          {createDateObjects(date, weekOffset).map((day, i) => {
+            if (i > 6 && i < 14) {
+            return renderDay({ ...day, onPickDate })
+            }
+          })
+          }
         </div>
         <div className={classes.row}>
-          {createDateObjects(date, weekOffset).map((day, i) =>{
-            if( i > 13 && i < 21){
-          return  renderDay({ ...day, onPickDate })}}
-          )}
+          {createDateObjects(date, weekOffset).map((day, i) => {
+            if (i > 13 && i < 21) {
+              return renderDay({ ...day, onPickDate });
+            }
+          })
+          }
         </div>
         <div className={classes.row}>
-          {createDateObjects(date, weekOffset).map((day, i) =>{
-            if( i > 20 && i < 28) {
+          {createDateObjects(date, weekOffset).map((day, i) => {
+            if (i > 20 && i < 28) {
               return renderDay({ ...day, onPickDate })
-            }}
-          )}
+            }
+          })
+          }
         </div>
       </div>
     );

@@ -3,7 +3,6 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 100%;
   padding: 5px;
 }
 
@@ -14,17 +13,18 @@
   align-items: center;
   background: #30333C;
   margin-top: 10px;
-  box-shadow: 0px 1px 3px #333;
-  height: 100%;
+  box-shadow: 2px 2px 4px 4px #292B2E;
+  z-index: 1;
+  padding-bottom: 10px;
 }
 
 .header {
   display: flex;
   flex-direction: row;
   background: #30333C;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  padding: 5px;
+  padding: 10px;
   width: 100%
 }
 
@@ -33,7 +33,53 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 100%;
   padding: 5px;
   margin: 10px;
+}
+
+.arrowRight {
+  color: #fff;
+  margin-right: 5px;
+  font-size: 36px;
+  background: url("../../static/angel-right.png");
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.arrowLeft {
+  color: #fff;
+  margin-right: 5px;
+  font-size: 36px;
+  background: url("../../static/angel-left.png");
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+}
+
+.selectedTime {
+  display: flex;
+  flex-direction: row;
+  background: orange;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  background-size: cover;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  box-shadow: 0px 1px 3px #333;
+}
+
+.notSelectedTime {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  background-size: cover;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  box-shadow: 0px 1px 3px #333;
 }
