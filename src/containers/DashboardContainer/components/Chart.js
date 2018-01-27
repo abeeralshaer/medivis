@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as d3 from 'd3';
+import classes from './styles/Student.styles.scss';
 
 class ProgressChart extends Component {
   static propTypes = {
@@ -87,7 +88,8 @@ class ProgressChart extends Component {
     const transform = `translate(${width / 2},${height / 2})`;
 
     return (
-      <div>
+      <div className={classes.subContainer}>
+      <div className={classes.chartHeader}>Current Quiz Average</div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           id="ChartID"

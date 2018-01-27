@@ -39,9 +39,7 @@ export const Student = ({ profile, emailVerified }) => (
           </div>
         </Col>
         <Col md={6}>
-          <div className={classes.subContainer} >
           <Chart />
-          </div>
         </Col>
       </Row>
     </Grid>
