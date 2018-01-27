@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Grid, Row, Col } from 'react-bootstrap';
 import ReactSideBar from 'react-sidebar';
+import * as d3 from 'd3';
+import Chart from './Chart';
+
 import SideBarContent from 'components/SideBar';
 import Calendar from 'components/Calender';
 import QuizesTable from './QuizesTable';
@@ -36,7 +39,9 @@ export const Student = ({ profile, emailVerified }) => (
           </div>
         </Col>
         <Col md={6}>
-          <div className={classes.subContainer} />
+          <div className={classes.subContainer} >
+          <Chart />
+          </div>
         </Col>
       </Row>
     </Grid>
